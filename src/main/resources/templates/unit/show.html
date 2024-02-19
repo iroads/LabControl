@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<a th:text="${'Имя: ' + unit.getName()}" ></a>
+
+<br>
+<a>В этом филиале закреплены следующие сотрудники</a>
+<br>
+<div th:each="user : ${users}">
+    <a th:href="@{/users/{id}(id = ${user.getId()})}"
+       th:text="${user.getName() + '  ' + user.getSurname()}"></a>
+</div>
+
+<form th:method="GET" th:action="@{/units/{id}/edit(id=${unit.getId()})}">
+    <input type="submit" value="Редактировать"/>
+</form>
+<form th:method="DELETE" th:action="@{/units/{id}(id=${unit.getId()})}">
+    <input type="submit" value="Удалить"/>
+</form>
+
+
+</body>
+</html>

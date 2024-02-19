@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/units/{id}(id=${unit.getId()})}" th:object="${unit}">
+  <label for="name">Введите название книги: </label>
+  <input type="text" th:field="*{name}" id="name"/>
+  <input type="submit" value="Редактировать!"/>
+</form>
+
+</body>
+</html>
