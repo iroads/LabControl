@@ -17,6 +17,15 @@
        th:text="${user.getName() + '  ' + user.getSurname()}"></a>
 </div>
 
+<br>
+<a>В этом филиале эксплуатируются следующие асфальтосмесительные установки</a>
+<br>
+<div th:each="plant : ${plants}">
+    <a th:href="@{/plants/{id}(id = ${plant.getId()})}"
+       th:text="${plant.getModel() + '  ' + plant.getLocation()}"></a>
+</div>
+
+
 <form th:method="GET" th:action="@{/units/{id}/edit(id=${unit.getId()})}">
     <input type="submit" value="Редактировать"/>
 </form>

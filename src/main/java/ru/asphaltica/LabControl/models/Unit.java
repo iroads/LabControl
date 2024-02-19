@@ -22,7 +22,7 @@ public class Unit {
     private String name;
     @OneToMany(mappedBy = "unit")
     private List<User> users;
-
-
+    @OneToMany(mappedBy = "unit")
+    private List<Plant> plants;
 
 }

@@ -29,4 +29,9 @@ public class Plant {
     @Column(name="productivity")
     private int productivity;
 
+    //Подразделение в котором находится асфальтосмесительная установка
+    @ManyToOne
+    @JoinColumn(name = "unit_id", referencedColumnName = "id")
+    private Unit unit;
+
 }

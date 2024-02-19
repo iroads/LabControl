@@ -20,4 +20,8 @@ public class PlantService {
     public List<Plant> finaAll() {
         return plantRepository.findAll();
     }
+
+    public List<Plant> findByUnitId(int id) {
+        return plantRepository.findByUnitId(id);
+    }
 }

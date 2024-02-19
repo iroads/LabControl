@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.asphaltica.LabControl.models.Unit;
+import ru.asphaltica.LabControl.services.PlantService;
 import ru.asphaltica.LabControl.services.UnitService;
 import ru.asphaltica.LabControl.services.UserService;
 
@@ -15,11 +16,13 @@ public class UnitController {
 
     private final UnitService unitService;
     private final UserService userService;
+    private final PlantService plantService;
 
     @Autowired
-    public UnitController(UnitService unitService, UserService userService) {
+    public UnitController(UnitService unitService, UserService userService, PlantService plantService) {
         this.unitService = unitService;
         this.userService = userService;
+        this.plantService = plantService;
     }
 
     @GetMapping()
@@ -32,6 +35,7 @@ public class UnitController {
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("unit", unitService.findById(id));
         model.addAttribute("users", userService.findByUnitId(id));
+        model.addAttribute("plants", plantService.findByUnitId(id));
         return "unit/show";
     }
 
