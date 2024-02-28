@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+<!--Отрисовка информации о сотруднике-->
+<a th:text="${'Имя: ' + user.getName()}" ></a>
+<br>
+<a th:text="${'Фамилия: ' + user.getSurname()}" ></a>
+<br>
+
+
+<!--Форма, которая позволяет снять назначение сотрудника из данного филиала.-->
+<div th:if="${ownUnit != null}">
+
+    <a th:text="${'Сотрудник назначен в: ' + ownUnit.getName()}"></a>
+
+    <form th:method="PATCH" th:action="@{/users/{id}/free(id=${user.getId()})}">
+        <input type="submit" value="Снять назначение в филиал!"/>
+    </form>
+</div>
+<!--Выбор филиала в который должен быть назначен сотрудник. -->
+<!--Отрисовывается если сотрудник еще не назначен.-->
+    <a>Назначить сотрудника в филиал: </a>
+    <form th:method="PATCH" th:action="@{/users/{id}/add(id=${user.getId()})}">
+        <select th:object="${unit}" th:field="*{id}" id="unit">
+            <option th:each="unit : ${units}" th:value="${unit.getId()}" th:text="${unit.getName()}">
+            </option>
+        </select>
+        <input type="submit" value="Назначить сотрудника"/>
+    </form>
+</div>
+</body>
+</html>

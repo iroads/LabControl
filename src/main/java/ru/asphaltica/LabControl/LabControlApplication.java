@@ -8,7 +8,6 @@ public class LabControlApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LabControlApplication.class, args);
-
 	}
 
 }

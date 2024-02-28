@@ -20,6 +20,14 @@ public class User {
     private String name;
     @Column(name = "surname")
     private String surname;
+    @Column(name = "position")
+    private String position;
+    @Column(name = "login")
+    private String login;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "roles")
+    private String roles;
     @ManyToOne
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;

@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.asphaltica.LabControl.models.Recipe;
 import ru.asphaltica.LabControl.models.Unit;
+import ru.asphaltica.LabControl.models.mixComponents.Mineral;
 import ru.asphaltica.LabControl.services.PlantService;
+import ru.asphaltica.LabControl.services.RecipeService;
 import ru.asphaltica.LabControl.services.UnitService;
 import ru.asphaltica.LabControl.services.UserService;
 
@@ -25,9 +28,10 @@ public class UnitController {
         this.plantService = plantService;
     }
 
+
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("units", unitService.finaAll());
+        model.addAttribute("units", unitService.findAll());
         return "unit/index";
     }
 

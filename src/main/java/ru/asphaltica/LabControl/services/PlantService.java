@@ -17,7 +17,7 @@ public class PlantService {
         this.plantRepository = plantRepository;
     }
 
-    public List<Plant> finaAll() {
+    public List<Plant> findAll() {
         return plantRepository.findAll();
     }
 

@@ -20,7 +20,9 @@ public class PlantController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("plants", plantService.finaAll());
+        model.addAttribute("plants", plantService.findAll());
         return "plant/index";
     }
+
+
 }

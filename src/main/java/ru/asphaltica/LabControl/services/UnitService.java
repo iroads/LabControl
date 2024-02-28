@@ -7,7 +7,6 @@ import ru.asphaltica.LabControl.models.Unit;
 import ru.asphaltica.LabControl.repositories.UnitRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,7 +19,7 @@ public class UnitService {
         this.unitRepository = unitRepository;
     }
 
-    public List<Unit> finaAll() {
+    public List<Unit> findAll() {
         List<Unit> units = unitRepository.findAll();
         return units;
     }

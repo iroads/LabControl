@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<a th:text="${'Имя: ' + unit.getName()}" ></a>
+<a th:text="${'Имя: ' + unit.getName()}"></a>
 
 <br>
 <a>В этом филиале закреплены следующие сотрудники</a>
@@ -18,12 +18,30 @@
 </div>
 
 <br>
-<a>В этом филиале эксплуатируются следующие асфальтосмесительные установки</a>
-<br>
-<div th:each="plant : ${plants}">
-    <a th:href="@{/plants/{id}(id = ${plant.getId()})}"
-       th:text="${plant.getModel() + '  ' + plant.getLocation()}"></a>
-</div>
+<!--<a>В этом филиале эксплуатируются следующие асфальтосмесительные установки</a>-->
+<!--<br>-->
+<!--<div th:each="plant : ${plants}">-->
+<!--    <a th:href="@{/plants/{id}(id = ${plant.getId()})}"-->
+<!--       th:text="${plant.getModel() + '  ' + plant.getLocation()}"></a>-->
+<!--</div>-->
+
+<table>
+    <caption>В этом филиале эксплуатируются следующие асфальтосмесительные установки</caption>
+    <tr>
+        <th>id</th>
+        <th>Модель</th>
+        <th>Расположение</th>
+        <th>Производительность, т/ч</th>
+    </tr>
+    <div th:each="plant : ${plants}">
+        <tr>
+            <td th:text = "${plant.getId()}"></td>
+            <td th:text = "${plant.getModel()}"></td>
+            <td th:text = "${plant.getLocation()}"></td>
+            <td th:text = "${plant.getProductivity()}"></td>
+        </tr>
+    </div>
+</table>
 
 
 <form th:method="GET" th:action="@{/units/{id}/edit(id=${unit.getId()})}">

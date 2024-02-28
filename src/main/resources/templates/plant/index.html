@@ -4,19 +4,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Список асфальтосмесительных установок</title>
 </head>
 <body>
-<p>список асфальтосмесительных установок</p>
+<div th:insert="parts/navbar :: navbar"></div>
+<br>
+<div class="container">
+    <table class="table table-striped table-bordered caption-top">
+        <caption>Список асфальтосмесительных установок</caption>
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Модель</th>
+            <th scope="col">Производительность, т/ч</th>
+            <th scope="col">Месторасположение</th>
+            <th scope="col">Филиал</th>
+            <th scope="col">Редактировать</th>
+            <th scope="col">Удалить</th>
+        </tr>
+        </thead>
+        <tbody>
+        <div th:each="plant : ${plants}">
+            <tr>
+                <th scope="row" th:text="${plant.getId()}"></th>
+                <td th:text="${plant.getModel()}"></td>
+                <td th:text="${plant.getProductivity()}"></td>
+                <td th:text="${plant.getLocation()}"></td>
 
-<div th:each="plant : ${plants}">
-    <a th:href="@{/plants/{id}(id = ${plant.getId()})}"
-       th:text="${plant.getModel()}"></a>
+                <div th:if="${plant.getUnit() != null}">
+                    <td>
+                        <a th:href="@{/plant/set-unit/{id}(id = ${plant.getId()})}"
+                           th:text="${plant.getUnit().getName()}"></a>
+                    </td>
+                </div>
+                <div th:unless="${plant.getUnit() != null}">
+                    <td>
+                        <a th:href="@{/plants/set-unit/{id}(id = ${plant.getId()})}" th:text="'не назначен'"></a>
+                    </td>
+                </div>
+                <td>
+                    <form th:method="GET" th:action="@{/plants/{id}/edit(id=${plant.getId()})}">
+                        <button type="" class="btn btn-success btn-sm">Редактировать</button>
+                    </form>
+                </td>
+                <td>
+                    <form th:method="DELETE" th:action="@{/plants/{id}(id=${plant.getId()})}">
+                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                    </form>
+                </td>
+
+            </tr>
+        </div>
+        </tbody>
+    </table>
+    <form th:method="GET" th:action="@{/plants/new}">
+        <button type="" class="btn btn-primary">Добавить новую асфальтосмесительную установку</button>
+    </form>
 </div>
 
-<a href="units/new">Добавить новую асфальтосмесительную установку</a>
+<!--<p>список асфальтосмесительных установок</p>-->
+
+<!--<div th:each="plant : ${plants}">-->
+<!--    <a th:href="@{/plants/{id}(id = ${plant.getId()})}"-->
+<!--       th:text="${plant.getModel()}"></a>-->
+<!--</div>-->
+
+<!--<a href="units/new">Добавить новую асфальтосмесительную установку</a>-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
