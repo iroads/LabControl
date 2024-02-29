@@ -11,6 +11,7 @@ import ru.asphaltica.LabControl.services.PlantService;
 import ru.asphaltica.LabControl.services.RecipeService;
 import ru.asphaltica.LabControl.services.UnitService;
 import ru.asphaltica.LabControl.services.UserService;
+import ru.asphaltica.LabControl.util.enums.HttpMethod;
 
 
 @Controller
@@ -63,6 +64,7 @@ public class UnitController {
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("unit", unitService.findById(id));
+
         return "unit/edit";
     }
 

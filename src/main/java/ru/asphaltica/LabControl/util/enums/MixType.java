@@ -1,4 +1,4 @@
-package ru.asphaltica.LabControl.util.marshallEnums;
+package ru.asphaltica.LabControl.util.enums;
 
 public enum MixType {
 

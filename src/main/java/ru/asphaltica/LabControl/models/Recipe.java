@@ -4,22 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.asphaltica.LabControl.models.mixComponents.Additive;
-import ru.asphaltica.LabControl.models.mixComponents.Bitumen;
-import ru.asphaltica.LabControl.models.mixComponents.Mineral;
-import ru.asphaltica.LabControl.models.mixComponents.MineralConverter;
-import ru.asphaltica.LabControl.util.marshallEnums.MixLayer;
-import ru.asphaltica.LabControl.util.marshallEnums.MixTrafic;
-import ru.asphaltica.LabControl.util.marshallEnums.MixType;
+import ru.asphaltica.LabControl.models.mixComponents.*;
 
-import java.util.Date;
 @Entity
-@Table(name="recipe")
+@Table(name = "recipe")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recipe {
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,18 +32,34 @@ public class Recipe {
     @Convert(converter = MineralConverter.class)
     @Column(name="powder")
     private Mineral powder;
-//    private Mineral stoneFine1;
-//    private Mineral stoneFine2;
-//    private Mineral stoneCoarse1;
-//    private Mineral stoneCoarse2;
-//    private Mineral stoneCoarse3;
-//    private Mineral stoneCoarse4;
-//    private Mineral stoneCoarse5;
-//    private Mineral stoneCoarse6;
-//
-//
-//    //Битум
-//    private Bitumen bitumen;
+    @Convert(converter=MineralConverter.class)
+    @Column(name="stone_fine1")
+    private Mineral stoneFine1;
+    @Convert(converter=MineralConverter.class)
+    @Column(name="stone_fine2")
+    private Mineral stoneFine2;
+    @Convert(converter=MineralConverter.class)
+    @Column(name="stone_coarse1")
+    private Mineral stoneCoarse1;
+    @Convert(converter=MineralConverter.class)
+    @Column(name="stone_coarse2")
+    private Mineral stoneCoarse2;
+    @Convert(converter=MineralConverter.class)
+    @Column(name="stone_coarse3")
+    private Mineral stoneCoarse3;
+    @Convert(converter = MineralConverter.class)
+    @Column(name="stone_coarse4")
+    private Mineral stoneCoarse4;
+    @Convert(converter=MineralConverter.class)
+    @Column(name="stone_coarse5")
+    private Mineral stoneCoarse5;
+    @Convert(converter=MineralConverter.class)
+    @Column(name="stone_coarse6")
+    private Mineral stoneCoarse6;
+    //Битум
+    @Convert(converter=BitumenConverter.class)
+    @Column(name = "bitumen")
+    private Bitumen bitumen;
 //
 //    //Добавки
 //    private Additive additive1;

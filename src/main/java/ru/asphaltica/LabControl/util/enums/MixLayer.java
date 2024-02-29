@@ -1,9 +1,9 @@
-package ru.asphaltica.LabControl.util.marshallEnums;
+package ru.asphaltica.LabControl.util.enums;
 
 public enum MixLayer {
     O("О"),
     N("Н"),
-    T("Т");
+    V("В");
 
     private String layer;
 

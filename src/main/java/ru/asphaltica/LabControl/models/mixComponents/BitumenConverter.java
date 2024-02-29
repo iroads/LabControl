@@ -9,14 +9,13 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 @Converter
-public class MineralConverter implements AttributeConverter<Mineral, String> {
-
+public class BitumenConverter implements AttributeConverter<Bitumen, String> {
     @Override
-    public String convertToDatabaseColumn(Mineral mineral) {
+    public String convertToDatabaseColumn(Bitumen bitumen) {
         ObjectMapper mapper = new ObjectMapper();
         StringWriter writer = new StringWriter();
         try {
-            mapper.writeValue(writer, mineral);
+            mapper.writeValue(writer, bitumen);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -24,13 +23,13 @@ public class MineralConverter implements AttributeConverter<Mineral, String> {
     }
 
     @Override
-    public Mineral convertToEntityAttribute(String s) {
+    public Bitumen convertToEntityAttribute(String s) {
         ObjectMapper mapper = new ObjectMapper();
         StringReader reader = new StringReader(s);
         try {
-            return mapper.readValue(reader, Mineral.class);
+            return mapper.readValue(reader, Bitumen.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 }

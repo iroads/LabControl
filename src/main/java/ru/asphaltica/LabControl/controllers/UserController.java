@@ -38,7 +38,7 @@ public class UserController {
         //model.addAttribute("authUser", personDetails.getUsername());
         return "user/index";
     }
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/new")
     public String newUnit(@ModelAttribute("user") User user) {
         return "user/new";
