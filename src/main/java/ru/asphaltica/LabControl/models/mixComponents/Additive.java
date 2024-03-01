@@ -1,5 +1,12 @@
 package ru.asphaltica.LabControl.models.mixComponents;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@JsonAutoDetect
+@Data
+@NoArgsConstructor
 public class Additive {
     //Производитель
     private String manufacturer;

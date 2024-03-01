@@ -7,10 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.asphaltica.LabControl.models.Recipe;
+import ru.asphaltica.LabControl.models.Unit;
 import ru.asphaltica.LabControl.models.User;
 import ru.asphaltica.LabControl.models.mixComponents.Mineral;
 import ru.asphaltica.LabControl.services.RecipeService;
-import ru.asphaltica.LabControl.util.enums.HttpMethod;
+import ru.asphaltica.LabControl.util.enums.MineralTitle;
 import ru.asphaltica.LabControl.util.enums.MixLayer;
 import ru.asphaltica.LabControl.util.enums.MixTraffic;
 import ru.asphaltica.LabControl.util.enums.MixType;
@@ -40,6 +41,13 @@ public class RecipeController {
         return "recipe/new";
     }
 
+    @GetMapping("/{id}")
+    public String show(@PathVariable("id") int id, Model model){
+        Recipe recipe = recipeService.findById(id);
+        model.addAttribute("recipe", recipe);
+        return "recipe/show";
+    }
+
     @PostMapping()
     public String create(@ModelAttribute("recipe") Recipe recipe) {
         recipeService.save(recipe);
@@ -49,6 +57,9 @@ public class RecipeController {
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("recipe", recipeService.findById(id));
+        model.addAttribute("mixTypes", MixType.values());
+        model.addAttribute("mixLayers", MixLayer.values());
+        model.addAttribute("mixTraffics", MixTraffic.values());
         return "recipe/edit";
     }
 

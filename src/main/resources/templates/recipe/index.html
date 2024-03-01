@@ -18,7 +18,8 @@
         <thead>
         <tr>
             <th class="text-center" scope="col">id</th>
-            <th scope="col">Минеральный порошок производитель</th>
+            <th scope="col">Смесь</th>
+            <th scope="col">Дата</th>
             <th class="text-center" scope="col">Редактировать</th>
             <th class="text-center" scope="col">Удалить</th>
         </tr>
@@ -26,8 +27,11 @@
         <tbody>
         <div th:each="recipe : ${recipes}">
             <tr>
-                <th class="text-center" scope="row" th:text="${recipe.getId()}"></th>
-                <td th:text="${recipe.getPowder().getManufacturer()}"></td>
+                <th class="text-center" scope="row">
+                    <a th:href="@{/recipes/{id}(id = ${recipe.getId()})}" th:text="${recipe.getId()}"></a>
+                </th>
+                <td th:text="${recipe.getMixType().getType() + recipe.getMixLayer().getLayer() + recipe.getMixTraffic().getTraffic()}"></td>
+                <td th:text="${recipe.getCreateDate()}"></td>
 
                 <td class="text-center">
                     <form th:method="GET" th:action="@{/recipes/{id}/edit(id=${recipe.getId()})}">

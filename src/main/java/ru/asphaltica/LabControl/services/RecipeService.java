@@ -7,6 +7,7 @@ import ru.asphaltica.LabControl.models.Recipe;
 import ru.asphaltica.LabControl.models.User;
 import ru.asphaltica.LabControl.repositories.RecipeRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,7 +28,6 @@ public class RecipeService {
 
     @Transactional
     public void save(Recipe recipe) {
-
         recipeRepository.save(recipe);
     }
 

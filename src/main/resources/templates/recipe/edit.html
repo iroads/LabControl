@@ -15,6 +15,44 @@
 <form th:method="PATCH" th:action="@{/recipes/{id}(id=${recipe.getId()})}" th:object="${recipe}" >
   <div class="container">
     <table class="table table-striped table-bordered caption-top">
+      <caption>Классификация асфальтобетонной смеси</caption>
+      <thead>
+      <tr>
+        <th class="text-center align-middle" scope="col">Тип смеси</th>
+        <th class="text-center align-middle" scope="col">Конструктивный слой</th>
+        <th class="text-center align-middle" scope="col">Условия движения</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          <select class="form-select" id="mixType" th:field="*{mixType}">
+            <option value="">Не выбрано</option>
+            <option th:each="mixType : ${mixTypes}" th:value="${mixType}" th:text="${mixType.getType()}">
+            </option>
+          </select>
+        </td>
+        <td>
+          <select class="form-select" id="mixLayer" th:field="*{mixLayer}">
+            <option value="">Не выбрано</option>
+            <option th:each="mixLayer : ${mixLayers}" th:value="${mixLayer}"
+                    th:text="${mixLayer.getLayer()}">
+            </option>
+          </select>
+        </td>
+        <td>
+          <select class="form-select" id="MixTraffic" th:field="*{mixTraffic}">
+            <option value="">Не выбрано</option>
+            <option th:each="mixTraffic : ${mixTraffics}" th:value="${mixTraffic}"
+                    th:text="${mixTraffic.getTraffic()}">
+            </option>
+          </select>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-striped table-bordered caption-top">
       <caption>Минеральные заполнители</caption>
       <thead>
       <tr>
@@ -177,6 +215,35 @@
       </tbody>
     </table>
 
+    <table class="table table-striped table-bordered caption-top" style="width: 100%">
+      <caption>Зерновой состав</caption>
+      <thead>
+      <tr>
+        <th class="text-center align-middle" scope="col">Размер ячейки, мм</th>
+        <th style="width: 6%" class="text-center align-middle " scope="col"
+            th:each="sito : ${recipe.getPP().keySet()}" th:text="${sito.getSize()}"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th class="text-center align-middle" scope="col">Полные проходы, %</th>
+        <td style="width: 6%"><input th:field="*{PP315}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP224}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP16}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP112}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP8}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP56}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP4}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP2}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP1}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP05}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP025}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP0125}" type="text" class="form-control col-md-6"></td>
+        <td style="width: 6%"><input th:field="*{PP0063}" type="text" class="form-control col-md-6"></td>
+      </tr>
+      </tbody>
+    </table>
+
     <table class="table table-striped table-bordered caption-top">
       <caption>Битумное вяжущее</caption>
       <thead>
@@ -200,9 +267,70 @@
       </tr>
       </tbody>
     </table>
-
+    <table class="table table-striped table-bordered caption-top">
+      <caption>Добавки</caption>
+      <thead>
+      <tr>
+        <th class="text-center align-middle" scope="col">Добавка</th>
+        <th class="text-center align-middle" scope="col">Производитель</th>
+        <th class="text-center align-middle" scope="col">Наименование</th>
+        <th class="text-center align-middle" scope="col">Содержание сверх 100% от минеральной части, %</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th class="text-center align-middle" scope="col">Добавка №1</th>
+        <td>
+          <input type="text" th:field="*{additive1.manufacturer}" class="form-control col-md-6">
+        </td>
+        <td>
+          <input type="text" th:field="*{additive1.name}" class="form-control col-md-6">
+        </td>
+        <td>
+          <input type="text" th:field="*{additive1.percentageUp100}" class="form-control col-md-6">
+        </td>
+      </tr>
+      <tr>
+        <th class="text-center align-middle" scope="col">Добавка №2</th>
+        <td>
+          <input type="text" th:field="*{additive2.manufacturer}" class="form-control col-md-6">
+        </td>
+        <td>
+          <input type="text" th:field="*{additive2.name}" class="form-control col-md-6">
+        </td>
+        <td>
+          <input type="text" th:field="*{additive2.percentageUp100}" class="form-control col-md-6">
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="table table-striped table-bordered caption-top">
+      <caption>Физико-механические показатели</caption>
+      <tbody>
+      <tr>
+        <th class="text-center align-middle" scope="col">Объемная плотность, г/см3</th>
+        <td>
+          <input type="text" th:field="*{gravityMixBulk}" class="form-control col-md-6">
+        </td>
+        <th class="text-center align-middle" scope="col">Максимальная плотность, г/см3</th>
+        <td>
+          <input type="text" th:field="*{gravityMixMaximum}" class="form-control col-md-6">
+        </td>
+      </tr>
+      <tr>
+        <th class="text-center align-middle" scope="col">Водостойкость</th>
+        <td>
+          <input type="text" th:field="*{waterResistance}" class="form-control col-md-6">
+        </td>
+        <th class="text-center align-middle" scope="col">Средняя глубина колеи, мм</th>
+        <td>
+          <input type="text" th:field="*{trackDepth}" class="form-control col-md-6">
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary mt-4">Редактировать</button>
   </div>
-  <button type="submit" class="btn btn-primary mt-4">Редактировать</button>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
