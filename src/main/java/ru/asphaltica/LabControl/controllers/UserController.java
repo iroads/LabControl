@@ -40,7 +40,7 @@ public class UserController {
     }
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/new")
-    public String newUnit(@ModelAttribute("user") User user) {
+    public String newUser(@ModelAttribute("user") User user) {
         return "user/new";
     }
 
@@ -50,14 +50,14 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, @ModelAttribute("unit") Unit unit, Model model){
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("ownUnit", user.getUnit());
-        model.addAttribute("units", unitService.findAll());
-        return "user/show";
-    }
+//    @GetMapping("/{id}")
+//    public String show(@PathVariable("id") int id, @ModelAttribute("unit") Unit unit, Model model){
+//        User user = userService.findById(id);
+//        model.addAttribute("user", user);
+//        model.addAttribute("ownUnit", user.getUnit());
+//        model.addAttribute("units", unitService.findAll());
+//        return "user/show";
+//    }
 
     @GetMapping("/set-unit/{id}")
     public String setUnit(@PathVariable("id") int id, @ModelAttribute("unit") Unit unit, Model model){
@@ -85,12 +85,6 @@ public class UserController {
     public String update(@ModelAttribute("user") User user,
                          @PathVariable("id") int id) {
         userService.update(id, user);
-        return "redirect:/users";
-    }
-
-    @PatchMapping("/{id}/free")
-    public String free(@PathVariable("id") int id) {
-        userService.free(id);
         return "redirect:/users";
     }
 

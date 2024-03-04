@@ -14,6 +14,12 @@
 <div th:insert="~{parts/navbar :: navbar}"></div>
 <form th:method="PATCH" th:action="@{/recipes/{id}(id=${recipe.getId()})}" th:object="${recipe}" >
   <div class="container">
+<!--    <select class="form-select" id="unit" name="unitId">-->
+<!--      <option th:each="unit : ${units}" th:value="${unit.getId()}"-->
+<!--              th:text="${unit.getName()}"-->
+<!--              th:selected="${unit.getName().equals(recipe.getUnit().getName())}">-->
+<!--      </option>-->
+<!--    </select>-->
     <table class="table table-striped table-bordered caption-top">
       <caption>Классификация асфальтобетонной смеси</caption>
       <thead>

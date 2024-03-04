@@ -24,5 +24,8 @@ public class Unit {
     private List<User> users;
     @OneToMany(mappedBy = "unit")
     private List<Plant> plants;
-
+    @OneToMany(mappedBy = "unit")
+    private List<Recipe> recipes;
+    @OneToMany(mappedBy = "ownUnit")
+    private List<Batch> batches;
 }

@@ -19,7 +19,8 @@
         <tr>
             <th class="text-center" scope="col">id</th>
             <th scope="col">Смесь</th>
-            <th scope="col">Дата</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Дата изменения</th>
             <th class="text-center" scope="col">Редактировать</th>
             <th class="text-center" scope="col">Удалить</th>
         </tr>
@@ -32,7 +33,7 @@
                 </th>
                 <td th:text="${recipe.getMixType().getType() + recipe.getMixLayer().getLayer() + recipe.getMixTraffic().getTraffic()}"></td>
                 <td th:text="${recipe.getCreateDate()}"></td>
-
+                <td th:text="${recipe.getModifyDate()}"></td>
                 <td class="text-center">
                     <form th:method="GET" th:action="@{/recipes/{id}/edit(id=${recipe.getId()})}">
                         <button type="submit" class="btn btn-success btn-sm">Редактировать</button>

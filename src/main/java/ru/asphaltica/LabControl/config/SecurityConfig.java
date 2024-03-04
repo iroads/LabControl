@@ -51,7 +51,9 @@ public class SecurityConfig {
                         //Разрешен доступ без аутентификации
                         //.requestMatchers("/units").permitAll()
                         //Разрешен доступ только аутентифицированным пользователям
-                        .requestMatchers("/", "/units/**", "/plants/**", "/users/**", "/results/**", "/recipes/**").authenticated())
+                        .requestMatchers("/", "/units/**", "/plants/**",
+                                "/users/**", "/results/**",
+                                "/recipes/**", "/batches/**").authenticated())
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/login"))
                 .build();

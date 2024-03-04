@@ -63,13 +63,6 @@ public class UserService {
     }
 
     @Transactional
-    public void free(int id) {
-        User user = userRepository.findById(id).orElse(null);
-        user.setUnit(null);
-        userRepository.save(user);
-    }
-
-    @Transactional
     public void addOwnUnit(int id, Unit unit) {
         User user = userRepository.findById(id).orElse(null);
         user.setUnit(unit);

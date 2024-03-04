@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.asphaltica.LabControl.models.Recipe;
+import ru.asphaltica.LabControl.models.Unit;
 import ru.asphaltica.LabControl.models.User;
 import ru.asphaltica.LabControl.repositories.RecipeRepository;
+import ru.asphaltica.LabControl.repositories.UnitRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -15,11 +17,15 @@ import java.util.List;
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final UnitRepository unitRepository;
 
     @Autowired
-    public RecipeService(RecipeRepository recipeRepository) {
+    public RecipeService(RecipeRepository recipeRepository, UnitRepository unitRepository) {
         this.recipeRepository = recipeRepository;
+        this.unitRepository = unitRepository;
     }
+
+
 
     public List<Recipe> findAll() {
         List<Recipe> recipes = recipeRepository.findAll();
@@ -27,21 +33,18 @@ public class RecipeService {
     }
 
     @Transactional
-    public void save(Recipe recipe) {
+    public void save(Recipe recipe, int unitId) {
+        recipe.setUnit(unitRepository.findById(unitId).get());
         recipeRepository.save(recipe);
     }
 
     @Transactional
     public void update(int id, Recipe updatedRecipe) {
-        //Recipe recipeToBeUpdated = recipeRepository.findById(id).get();
+        Recipe recipeToBeUpdated = recipeRepository.findById(id).get();
         updatedRecipe.setId(id);
+        updatedRecipe.setUnit(recipeToBeUpdated.getUnit());
 //        updatedUser.setUnit(userToBeUpdated.getUnit()); //чтобы не терялась связь при обновлении
-//        //Проверяем если пароль в форме пришел пустой то не меняем его
-//        if (!updatedUser.getPassword().isEmpty()) {
-//            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-//        } else {
-//            updatedUser.setPassword(userToBeUpdated.getPassword());
-//        }
+        updatedRecipe.setCreateDate(recipeToBeUpdated.getCreateDate());
         recipeRepository.save(updatedRecipe);
     }
 

@@ -32,18 +32,10 @@
                 <td th:text="${plant.getModel()}"></td>
                 <td th:text="${plant.getProductivity()}"></td>
                 <td th:text="${plant.getLocation()}"></td>
-
-                <div th:if="${plant.getUnit() != null}">
                     <td>
-                        <a th:href="@{/plant/set-unit/{id}(id = ${plant.getId()})}"
-                           th:text="${plant.getUnit().getName()}"></a>
+                        <a th:href="@{/plants/set-unit/{id}(id = ${plant.getId()})}"
+                           th:text="${plant.getUnit() != null} ? ${plant.getUnit().getName()} : 'не назначен'"></a>
                     </td>
-                </div>
-                <div th:unless="${plant.getUnit() != null}">
-                    <td>
-                        <a th:href="@{/plants/set-unit/{id}(id = ${plant.getId()})}" th:text="'не назначен'"></a>
-                    </td>
-                </div>
                 <td>
                     <form th:method="GET" th:action="@{/plants/{id}/edit(id=${plant.getId()})}">
                         <button type="" class="btn btn-success btn-sm">Редактировать</button>
@@ -54,13 +46,12 @@
                         <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
                     </form>
                 </td>
-
             </tr>
         </div>
         </tbody>
     </table>
     <form th:method="GET" th:action="@{/plants/new}">
-        <button type="" class="btn btn-primary">Добавить новую асфальтосмесительную установку</button>
+        <button type="submit" class="btn btn-primary">Добавить новую асфальтосмесительную установку</button>
     </form>
 </div>
 

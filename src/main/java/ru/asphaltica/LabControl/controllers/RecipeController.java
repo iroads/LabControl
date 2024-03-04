@@ -1,17 +1,13 @@
 package ru.asphaltica.LabControl.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.asphaltica.LabControl.models.Recipe;
 import ru.asphaltica.LabControl.models.Unit;
-import ru.asphaltica.LabControl.models.User;
-import ru.asphaltica.LabControl.models.mixComponents.Mineral;
 import ru.asphaltica.LabControl.services.RecipeService;
-import ru.asphaltica.LabControl.util.enums.MineralTitle;
+import ru.asphaltica.LabControl.services.UnitService;
 import ru.asphaltica.LabControl.util.enums.MixLayer;
 import ru.asphaltica.LabControl.util.enums.MixTraffic;
 import ru.asphaltica.LabControl.util.enums.MixType;
@@ -21,11 +17,15 @@ import ru.asphaltica.LabControl.util.enums.MixType;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final UnitService unitService;
 
     @Autowired
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, UnitService unitService) {
         this.recipeService = recipeService;
+        this.unitService = unitService;
     }
+
+
 
     @GetMapping()
     public String index(Model model) {
@@ -38,11 +38,12 @@ public class RecipeController {
         model.addAttribute("mixTypes", MixType.values());
         model.addAttribute("mixLayers", MixLayer.values());
         model.addAttribute("mixTraffics", MixTraffic.values());
+        model.addAttribute("units", unitService.findAll());
         return "recipe/new";
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") int id, Model model) {
         Recipe recipe = recipeService.findById(id);
         model.addAttribute("recipe", recipe);
         return "recipe/show";
@@ -50,7 +51,7 @@ public class RecipeController {
 
     @PostMapping()
     public String create(@ModelAttribute("recipe") Recipe recipe) {
-        recipeService.save(recipe);
+        recipeService.save(recipe, recipe.getUnitId());
         return "redirect:/recipes";
     }
 
@@ -60,6 +61,7 @@ public class RecipeController {
         model.addAttribute("mixTypes", MixType.values());
         model.addAttribute("mixLayers", MixLayer.values());
         model.addAttribute("mixTraffics", MixTraffic.values());
+        model.addAttribute("units", unitService.findAll());
         return "recipe/edit";
     }
 

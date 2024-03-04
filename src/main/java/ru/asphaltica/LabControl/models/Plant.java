@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 //Асфальтосмесительная установка
 @Data
 @NoArgsConstructor
@@ -34,4 +36,6 @@ public class Plant {
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
 
+    @OneToMany(mappedBy = "ownPlant")
+    private List<Batch> batches;
 }

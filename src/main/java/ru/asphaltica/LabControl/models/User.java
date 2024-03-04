@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,4 +33,11 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
+    @OneToMany(mappedBy = "batchCreator")
+    private List<Batch> batches;
+
+    public String getFullName(){
+        String fullName = this.name + " " + this.surname;
+        return fullName;
+    }
 }

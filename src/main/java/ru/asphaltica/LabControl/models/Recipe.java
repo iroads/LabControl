@@ -137,6 +137,12 @@ public class Recipe {
     //Глубина колеи
     @Column(name = "track_depth")
     private double trackDepth;
+    //Филиал
+    @ManyToOne
+    @JoinColumn(name = "unit_id", referencedColumnName = "id")
+    private Unit unit;
+    @Transient
+    private int unitId;
 
     public Map<Sito, Double> getPP() {
         Map<Sito, Double> PPMap = new LinkedHashMap<>();
@@ -184,7 +190,9 @@ public class Recipe {
     }
     //Расчет пористости минерального заполнителя
     public double getPMZ() {
+        //Числитель формулы
         double summa = getMinerals().stream().mapToDouble(mineral -> mineral.getPercentage()).sum();
+        //Знаменатель формулы
         double percentageDiviedByGravity = getMinerals().stream().filter(mineral -> mineral.getPercentage() !=0)
                 .mapToDouble(mineral -> mineral.getPercentage()/(mineral.getGravityStoneAverage() == 0 ?
                         mineral.getGravityStoneApparent()
@@ -192,13 +200,13 @@ public class Recipe {
         //Общая объемная плотность каменных материалов
         double gravityStoneBulk = Rounder.roundDouble(3,summa/percentageDiviedByGravity);
         //Количество минерального заполнителя в асфальтобетонной смеси с учетом содержания битумного вяжущего, включенного в 100% состава смеси, доли единиц
-        double pStone = (100 - getBitumenPercentageIn100())/100;
+        double pStone = Rounder.roundDouble(3,(100 - getBitumenPercentageIn100())/100);
         return Rounder.roundDouble(1, (1 - gravityMixBulk*pStone/gravityStoneBulk)*100);
     }
 
     //Расчет содержания битума в 100% асфальтобетонной смеси
     public double getBitumenPercentageIn100() {
-        return Rounder.roundDouble(1, bitumen.getPercentageUp100()*100/(100+bitumen.getPercentageUp100()));
+        return Rounder.roundDouble(2, bitumen.getPercentageUp100()*100/(100+bitumen.getPercentageUp100()));
     }
 
     //Расчет пустот наполненных вяжущим ПНБ

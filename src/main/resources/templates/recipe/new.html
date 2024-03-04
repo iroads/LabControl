@@ -18,6 +18,11 @@
 <br>
 <form class="mb-3" th:method="POST" th:object="${recipe}" th:action="@{/recipes}">
     <div class="container">
+
+        <select class="form-select" id="unit" th:field="*{unitId}">
+            <option th:each="unit : ${units}" th:value="${unit.getId()}" th:text="${unit.getName()}">
+            </option>
+        </select>
         <table class="table table-striped table-bordered caption-top">
             <caption>Классификация асфальтобетонной смеси</caption>
             <thead>

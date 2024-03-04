@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Список сотрудников</title>
+    <title>Партии</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
@@ -14,44 +14,37 @@
 <br>
 <div class="container">
     <table class="table table-striped table-bordered caption-top">
-        <caption>Список пользователей</caption>
+        <caption>Партии</caption>
         <thead>
         <tr>
             <th class="text-center" scope="col">id</th>
-            <th scope="col">Имя</th>
-            <th scope="col">Фамилия</th>
-            <th scope="col">Должность</th>
-            <th scope="col">Филиал</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Дата изменения</th>
+            <th scope="col">Создатель</th>
+            <th scope="col">Асфальтосмесительная установка</th>
+            <th scope="col">Количество, тн</th>
             <th class="text-center" scope="col">Редактировать</th>
             <th class="text-center" scope="col">Удалить</th>
         </tr>
         </thead>
         <tbody>
-        <div th:each="user : ${users}">
+        <div th:each="batch : ${batches}">
             <tr>
-                <th class="text-center" scope="row" th:text="${user.getId()}"></th>
-                <td th:text="${user.getName()}"></td>
-                <td th:text="${user.getSurname()}"></td>
-                <td th:text="${user.getPosition()}"></td>
-                <div th:if="${user.getUnit() != null}">
-                    <td>
-                        <a th:href="@{/users/set-unit/{id}(id = ${user.getId()})}"
-                           th:text="${user.getUnit().getName()}"></a>
-                    </td>
-                </div>
-                <div th:unless="${user.getUnit() != null}">
-                    <td>
-                        <a th:href="@{/users/set-unit/{id}(id = ${user.getId()})}" th:text="'не назначен'"></a>
-                    </td>
-                </div>
-
+                <th class="text-center" scope="row">
+                    <a th:href="@{/batches/{id}(id = ${batch.getId()})}" th:text="${batch.getId()}"></a>
+                </th>
+                <td th:text="${batch.getCreateDate()}"></td>
+                <td th:text="${batch.getModifyDate()}"></td>
+                <td th:text="${batch.getBatchCreator().getFullName()}"></td>
+                <td th:text="${batch.getOwnPlant().getModel()} + ' ' + ${batch.getOwnPlant().getLocation()}"></td>
+                <td th:text="${batch.getQuantity()}"></td>
                 <td class="text-center">
-                    <form th:method="GET" th:action="@{/users/{id}/edit(id=${user.getId()})}">
+                    <form th:method="GET" th:action="@{/batches/{id}/edit(id=${batch.getId()})}">
                         <button type="submit" class="btn btn-success btn-sm">Редактировать</button>
                     </form>
                 </td>
                 <td class="text-center">
-                    <form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
+                    <form th:method="DELETE" th:action="@{/batches/{id}(id=${batch.getId()})}">
                         <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
                     </form>
                 </td>
@@ -60,8 +53,8 @@
         </div>
         </tbody>
     </table>
-    <form th:method="GET" th:action="@{/users/new}">
-        <button type="submit" class="btn btn-primary">Добавить нового пользователя</button>
+    <form th:method="GET" th:action="@{/batches/new}">
+        <button type="submit" class="btn btn-primary">Добавить новую партию</button>
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

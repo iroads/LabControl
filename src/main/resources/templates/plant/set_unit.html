@@ -3,7 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Назначение пользователя в филиал</title>
+    <title>Назначение асфальтосмесительной установки в филиал</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
@@ -14,31 +14,32 @@
 <br>
 
 <div class="container">
-    <p class="h3">Назначение пользователя в филиал</p>
+    <p class="h3">Назначение асфальтосмесительной установки в филиал</p>
     <br>
-    <!--Отрисовка информации о сотруднике-->
+    <!--Отрисовка информации об установке-->
     <table class="table table-striped table-bordered caption-top">
-        <caption>Информация о сотруднике</caption>
+        <caption>Информация об асфальтосмесительной установке</caption>
         <thead>
         <tr>
-            <th class="text-center align-middle" scope="col">Имя</th>
-            <th class="text-center align-middle" scope="col">Фамилия</th>
+            <th class="text-center align-middle" scope="col">Модель</th>
+            <th class="text-center align-middle" scope="col">Производительность, т/ч</th>
+            <th class="text-center align-middle" scope="col">Месторасположение</th>
             <th class="text-center align-middle" scope="col">Филиал</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td class="text-center" th:text="${user.getName()}"></td>
-            <td class="text-center" th:text="${user.getSurname()}"></td>
-            <td class="text-center" th:text="${user.getUnit() != null} ? ${user.getUnit().getName()} : 'не назначен'"></td>
-
+            <td class="text-center" th:text="${plant.getModel()}"></td>
+            <td class="text-center" th:text="${plant.getProductivity()}"></td>
+            <td class="text-center" th:text="${plant.getLocation()}"></td>
+            <td class="text-center" th:text="${plant.getUnit() != null} ? ${plant.getUnit().getName()} : 'не назначен'"></td>
         </tr>
         </tbody>
     </table>
-    <!--Выбор филиала в который должен быть назначен сотрудник. -->
-    <form th:method="PATCH" th:action="@{/users/{id}/add(id=${user.getId()})}">
+    <!--Выбор филиала в который назначается установка -->
+    <form th:method="PATCH" th:action="@{/plants/{id}/add(id=${plant.getId()})}">
         <div class="input-group mb-3">
-            <span class="input-group-text align-middle">Назначить сотрудника в филиал:</span>
+            <span class="input-group-text align-middle">Назначить установку в филиал:</span>
             <select class="form-select" th:object="${unit}" id="unit" th:field="*{id}">
                 <option th:each="unit : ${units}" th:value="${unit.getId()}"
                         th:text="${unit.getName()}">
