@@ -141,6 +141,8 @@ public class Recipe {
     @ManyToOne
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
+    @OneToMany(mappedBy = "recipeSource")
+    private List<Batch> batches;
     @Transient
     private int unitId;
 

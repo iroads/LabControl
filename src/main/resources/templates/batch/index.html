@@ -22,6 +22,7 @@
             <th scope="col">Дата изменения</th>
             <th scope="col">Создатель</th>
             <th scope="col">Асфальтосмесительная установка</th>
+            <th scope="col">Рецепт</th>
             <th scope="col">Количество, тн</th>
             <th class="text-center" scope="col">Редактировать</th>
             <th class="text-center" scope="col">Удалить</th>
@@ -37,6 +38,7 @@
                 <td th:text="${batch.getModifyDate()}"></td>
                 <td th:text="${batch.getBatchCreator().getFullName()}"></td>
                 <td th:text="${batch.getOwnPlant().getModel()} + ' ' + ${batch.getOwnPlant().getLocation()}"></td>
+                <td th:text="${batch.getRecipeSource().getMixType().getType()}"></td>
                 <td th:text="${batch.getQuantity()}"></td>
                 <td class="text-center">
                     <form th:method="GET" th:action="@{/batches/{id}/edit(id=${batch.getId()})}">
@@ -53,7 +55,7 @@
         </div>
         </tbody>
     </table>
-    <form th:method="GET" th:action="@{/batches/new}">
+    <form th:method="GET" th:action="@{/batches/new_step1}">
         <button type="submit" class="btn btn-primary">Добавить новую партию</button>
     </form>
 </div>

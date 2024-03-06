@@ -47,5 +47,8 @@ public class Batch {
     @ManyToOne
     @JoinColumn(name = "plant_id", referencedColumnName = "id")
     private Plant ownPlant;
-    //private Recipe recipe;
+
+    @ManyToOne
+    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
+    private Recipe recipeSource;
 }

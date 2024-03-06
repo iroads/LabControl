@@ -101,7 +101,9 @@ create table batch
     quantity     decimal(7, 3),
     user_id      int         REFERENCES users (id) ON DELETE SET NULL,
     unit_id      int         REFERENCES unit (id) ON DELETE SET NULL,
-    plant_id      int         REFERENCES plant (id) ON DELETE SET NULL
+    plant_id      int         REFERENCES plant (id) ON DELETE SET NULL,
+    recipe_id      int         REFERENCES recipe (id) ON DELETE SET NULL
+
 );
 
 

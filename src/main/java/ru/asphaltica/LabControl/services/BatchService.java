@@ -28,7 +28,6 @@ public class BatchService {
         return batches;
     }
 
-
     @Transactional
     public void save(Batch batch, User batchCreator, Plant ownPlant) {
         batch.setBatchCreator(batchCreator);
@@ -41,11 +40,12 @@ public class BatchService {
     public void update(int id, Batch updatedBatch) {
         Batch batchToBeUpdated = batchRepository.findById(id).get();
         updatedBatch.setId(id);
+        //Чтобы не терялись связи при обновлении
         updatedBatch.setBatchCreator(batchToBeUpdated.getBatchCreator());
         updatedBatch.setOwnUnit(batchToBeUpdated.getOwnUnit());
-        updatedBatch.setOwnPlant(batchToBeUpdated.getOwnPlant());
-//        updatedUser.setUnit(userToBeUpdated.getUnit()); //чтобы не терялась связь при обновлении
+        updatedBatch.setRecipeSource(batchToBeUpdated.getRecipeSource());
         updatedBatch.setCreateDate(batchToBeUpdated.getCreateDate());
+
         batchRepository.save(updatedBatch);
     }
 

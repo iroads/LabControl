@@ -12,6 +12,16 @@
 <br>
 <form class="mb-3" th:method="PATCH" th:action="@{/batches/{id}(id=${batch.getId()})}" th:object="${batch}">
     <div class="container">
+        <div class="input-group mt-2">
+            <span class="input-group-text">Асфальтосмесительная установка:</span>
+            <select class="form-select" id="unit" th:field="*{plantId}">
+                <div th:each="plant : ${plants}">
+                    <option  th:value="${plant.getId()}"
+                            th:text="${plant.getModel() + ' ' + plant.getLocation()}">
+                    </option>
+                </div>
+            </select>
+        </div>
         <div class="input-group row mt-2">
             <span class="input-group-text col-md-2">Количество:</span>
             <input type="text" th:field="*{quantity}" class="form-control col-md-6">

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.asphaltica.LabControl.models.Batch;
 import ru.asphaltica.LabControl.models.Recipe;
 import ru.asphaltica.LabControl.models.Unit;
 import ru.asphaltica.LabControl.services.RecipeService;
@@ -24,8 +25,6 @@ public class RecipeController {
         this.recipeService = recipeService;
         this.unitService = unitService;
     }
-
-
 
     @GetMapping()
     public String index(Model model) {
