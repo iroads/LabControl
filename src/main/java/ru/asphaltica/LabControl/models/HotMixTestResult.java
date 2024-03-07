@@ -57,6 +57,10 @@ public class HotMixTestResult {
     @Column(name = "gmm")
     private double gmm;
 
+    //Партия
+    @Transient
+    private Batch batchSource;
+
     //Метод кладет в LinkedHashMap значения частных остатков на ситах
     public Map<Sito, Double> getCHOGS() {
         Map<Sito, Double> chogMap = new LinkedHashMap<>();

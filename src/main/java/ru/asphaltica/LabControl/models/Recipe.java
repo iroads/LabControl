@@ -218,5 +218,11 @@ public class Recipe {
         return Rounder.roundDouble(1, ((pmz - voids) / pmz)*100);
     }
 
+    //Получение полного названия смеси
+    public String getMixTitle(){
+        String mixTitle = new String(this.mixType.getType() + this.mixLayer.getLayer() + this.mixTraffic.getTraffic());
+        return mixTitle;
+    }
+
 
 }

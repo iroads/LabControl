@@ -50,7 +50,7 @@ public class BatchController {
     public String newBatchStep1(Model model, @ModelAttribute("recipe") Recipe recipe,
                                 @ModelAttribute("batch") Batch batch) {
         model.addAttribute("recipes", recipeService.findAll());
-        return "batch/choose_recipe";
+        return "batch/new_step1";
     }
 
     @GetMapping("/new_step2")
@@ -60,7 +60,7 @@ public class BatchController {
         model.addAttribute("plants", plantsOfAuthUser);
         model.addAttribute("recipeSource", batch.getRecipeSource());
         model.addAttribute("batch", batch);
-        return "batch/new";
+        return "batch/new_step2";
     }
 
     @PostMapping()

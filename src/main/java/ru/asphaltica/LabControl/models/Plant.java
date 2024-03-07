@@ -38,4 +38,9 @@ public class Plant {
 
     @OneToMany(mappedBy = "ownPlant")
     private List<Batch> batches;
+
+    public String getFullTitle(){
+        String fullTitle = this.model + " " + this.location;
+        return fullTitle;
+    }
 }

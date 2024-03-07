@@ -2,52 +2,61 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous">
-  <style type="text/css">
-    td, th {border: 1px solid black;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <style type="text/css">
+        td, th {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <title>Результаты испытаний</title>
 </head>
 <body>
-<div th:insert="parts/navbar :: navbar"></div>
+<div th:insert="~{parts/navbar :: navbar}"></div>
 <br>
+<div class="container">
+    <p class="h3">Список результатов испытаний</p>
+    <br>
+    <form th:method="GET" th:action="@{/results/new_step1}">
+        <button type="submit" class="btn btn-primary">Добавить результаты испытания</button>
+    </form>
+</div>
 <p>Результаты испытаний</p>
 <br>
 <div th:each="result : ${results}">
-<!--  <a th:href="@{/results/{id}(id = ${result.getId()})}" th:text="${result.getId()}"></a>-->
-  <table>
-    <caption>Зерновой состав смеси</caption>
-    <tr>
-      <th>id</th>
-      <th>Размер ячейки,мм</th>
-      <div th:each="entry : ${result.getCHOGS().entrySet()}">
-        <th th:text="${entry.getKey().getSize()}"></th>
-      </div>
-    </tr>
-    <tr>
-      <td></td>
-      <td>Ч/О,%</td>
-      <div th:each="entry : ${result.getCHOPS().entrySet()}">
-        <th th:text="${entry.getValue()}"></th>
-      </div>
-    </tr>
-    <tr>
-      <td></td>
-      <td>ПП,%</td>
-      <div th:each="entry : ${result.getPP().entrySet()}">
-        <th th:text="${entry.getValue()}"></th>
-      </div>
-    </tr>
-  </table>
-  <br>
-  <p th:text = "'Максимальная плотность смеси, г/см3: ' + ${result.getGmm()}"></p>
-  <p th:text = "'Объемная плотность, г/см3: ' + ${result.getGmb()}"></p>
-  <p th:text = "'Содержание воздушных пустот, %: ' + ${result.getVoids()}"></p>
+    <!--  <a th:href="@{/results/{id}(id = ${result.getId()})}" th:text="${result.getId()}"></a>-->
+    <table>
+        <caption>Зерновой состав смеси</caption>
+        <tr>
+            <th>id</th>
+            <th>Размер ячейки,мм</th>
+            <div th:each="entry : ${result.getCHOGS().entrySet()}">
+                <th th:text="${entry.getKey().getSize()}"></th>
+            </div>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Ч/О,%</td>
+            <div th:each="entry : ${result.getCHOPS().entrySet()}">
+                <th th:text="${entry.getValue()}"></th>
+            </div>
+        </tr>
+        <tr>
+            <td></td>
+            <td>ПП,%</td>
+            <div th:each="entry : ${result.getPP().entrySet()}">
+                <th th:text="${entry.getValue()}"></th>
+            </div>
+        </tr>
+    </table>
+    <br>
+    <p th:text="'Максимальная плотность смеси, г/см3: ' + ${result.getGmm()}"></p>
+    <p th:text="'Объемная плотность, г/см3: ' + ${result.getGmb()}"></p>
+    <p th:text="'Содержание воздушных пустот, %: ' + ${result.getVoids()}"></p>
 
 </div>
 
