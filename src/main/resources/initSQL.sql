@@ -49,8 +49,9 @@ create table hot_mix_test_result
     chog16   decimal(6, 2),
     chog224  decimal(6, 2),
     chog315  decimal(6, 2),
-    gmb      decimal(4, 3),
-    gmm      decimal(4, 3)
+    gravity_mix_bulk      decimal(4, 3),
+    gravity_mix_maximum      decimal(4, 3),
+    batch_id int REFERENCES batch (id) ON DELETE CASCADE
 );
 
 create table recipe

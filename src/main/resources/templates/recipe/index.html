@@ -12,7 +12,65 @@
 <body>
 <div th:insert="~{parts/navbar :: navbar}"></div>
 <br>
+
+
 <div class="container">
+
+    <form th:method="GET" th:action="@{/recipes}">
+        <label for="startDate">Начальная дата: </label>
+        <input class="form-control" th:value="${start_date}" type="date" id="startDate" name="start_date"/>
+
+        <label for="endDate">Конечная дата: </label>
+        <input class="form-control" th:value="${end_date}" type="date" id="endDate" name="end_date"/>
+
+<!--        <select class="form-select" id="mixType" name="mix_type">-->
+<!--            <option value="">Не выбрано</option>-->
+<!--            <option th:each="mixType : ${mixTypes}" th:text="${mixType.getType()}"-->
+<!--                    th:selected="${mix_type == mixType.getType()}">-->
+<!--            </option>-->
+<!--        </select>-->
+
+        <table class="table table-striped table-bordered caption-top">
+            <caption>Классификация асфальтобетонной смеси</caption>
+            <thead>
+            <tr>
+                <th class="text-center align-middle" scope="col">Тип смеси</th>
+                <th class="text-center align-middle" scope="col">Конструктивный слой</th>
+                <th class="text-center align-middle" scope="col">Условия движения</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <select class="form-select" id="mixType" name="mix_type">
+                        <option th:value="${''}" th:selected="${!mix_type.isPresent() || mix_layer.get().isEmpty()}">Не выбрано</option>
+                        <option th:each="mixType : ${mixTypes}" th:text="${mixType.getType()}"
+                                th:selected="${mix_type.orElse(null) == mixType.getType()}">
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-select" id="mixLayer" name="mix_layer">
+                        <option th:value="${''}" th:selected="${!mix_layer.isPresent() || mix_layer.get().isEmpty()}">Не выбрано</option>
+                        <option th:each="mixLayer : ${mixLayers}" th:text="${mixLayer.getLayer()}"
+                                th:selected="${mix_layer.orElse(null) == mixLayer.getLayer()}">
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-select" id="MixTraffic" name="mix_traffic">
+                        <option th:value="${''}" th:selected="${!mix_traffic.isPresent() || mix_layer.isEmpty()}">Не выбрано</option>
+                        <option th:each="mixTraffic : ${mixTraffics}" th:text="${mixTraffic.getTraffic()}"
+                                th:selected="${mix_traffic.orElse(null) == mixTraffic.getTraffic()}">>
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Показать</button>
+    </form>
+
     <table class="table table-striped table-bordered caption-top">
         <caption>Список рецептов</caption>
         <thead>

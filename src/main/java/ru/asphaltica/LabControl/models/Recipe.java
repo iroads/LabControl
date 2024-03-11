@@ -14,6 +14,7 @@ import ru.asphaltica.LabControl.util.enums.MixLayer;
 import ru.asphaltica.LabControl.util.enums.MixTraffic;
 import ru.asphaltica.LabControl.util.enums.MixType;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,12 +34,12 @@ public class Recipe {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date")
-    private Date modifyDate;
+    private LocalDateTime modifyDate;
 
     //Классификация смеси
 

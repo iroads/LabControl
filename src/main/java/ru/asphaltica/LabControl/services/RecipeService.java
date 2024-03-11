@@ -1,16 +1,22 @@
 package ru.asphaltica.LabControl.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.asphaltica.LabControl.models.Recipe;
 import ru.asphaltica.LabControl.models.Unit;
-import ru.asphaltica.LabControl.models.User;
 import ru.asphaltica.LabControl.repositories.RecipeRepository;
 import ru.asphaltica.LabControl.repositories.UnitRepository;
+import ru.asphaltica.LabControl.util.enums.MixLayer;
+import ru.asphaltica.LabControl.util.enums.MixTraffic;
+import ru.asphaltica.LabControl.util.enums.MixType;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,10 +32,46 @@ public class RecipeService {
     }
 
 
+    public List<Recipe> findAll1(LocalDateTime startDate, LocalDateTime endDate, String mixType, String mixLayer, String mixTraffic, Unit unit) {
+        List<Recipe> recipes = recipeRepository.findAll(Specification.allOf(
+                (root, query, criterialBuilder) -> {
+                    if (startDate == null) {
+                        return null;
+                    }
+                    return criterialBuilder.between(root.get("createDate"), startDate, endDate);
+                },
+                (root, query, criterialBuilder) -> {
+                    if (mixType == null) {
+                        return null;
+                    }
+                    return criterialBuilder.equal(root.get("mixType"), MixType.findValueByType(mixType));
+                },
+                (root, query, criterialBuilder) -> {
+                    if (mixLayer == null) {
+                        return null;
+                    }
+                    return criterialBuilder.equal(root.get("mixLayer"), MixLayer.findValueByLayer(mixLayer));
+                },
+                (root, query, criterialBuilder) -> {
+                    if (mixTraffic == null) {
+                        return null;
+                    }
+                    return criterialBuilder.equal(root.get("mixTraffic"), MixTraffic.findValueByTraffic(mixTraffic));
+                },
+                (root, query, criterialBuilder) -> {
+                    if (unit == null) {
+                        return null;
+                    }
+                    return criterialBuilder.equal(root.get("unit"), unit);
+                }
+        ));
+//        int unitid = 3;
+//        List<Recipe> recipes = recipeRepository.findAllRecipeJoinUnit(startDate, endDate, mixType, "Уфимское ДРСУ");
+        return recipes;
+    }
 
     public List<Recipe> findAll() {
-        List<Recipe> recipes = recipeRepository.findAll();
-        return recipes;
+        return recipeRepository.findAll();
     }
 
     @Transactional

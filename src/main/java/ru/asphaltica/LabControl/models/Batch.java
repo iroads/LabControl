@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,4 +53,7 @@ public class Batch {
     @ManyToOne
     @JoinColumn(name = "recipe_id", referencedColumnName = "id")
     private Recipe recipeSource;
+
+    @OneToMany(mappedBy = "batchSource")
+    private List<HotMixTestResult> results;
 }

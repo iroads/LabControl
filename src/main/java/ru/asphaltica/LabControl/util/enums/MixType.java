@@ -1,5 +1,7 @@
 package ru.asphaltica.LabControl.util.enums;
 
+import java.util.Arrays;
+
 public enum MixType {
 
     A5("A5"),
@@ -17,5 +19,10 @@ public enum MixType {
 
     public String getType(){
         return this.type;
+    }
+
+    public static MixType findValueByType(String key) {
+        return Arrays.stream(MixType.values()).filter(v ->
+                v.getType().equals(key)).findFirst().get();
     }
 }

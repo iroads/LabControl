@@ -22,6 +22,7 @@ public class PlantService {
 
     public List<Plant> findAll() {
         return plantRepository.findAll();
+
     }
 
     public Plant findById(int id) {

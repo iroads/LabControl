@@ -51,14 +51,15 @@ public class HotMixTestResult {
     private double chog315;
 
     //Объемная плотность смеси
-    @Column(name = "gmb")
-    private double gmb;
+    @Column(name = "gravity_mix_bulk")
+    private double gravityMixBulk;
     //Максимальная плотность смеси
-    @Column(name = "gmm")
-    private double gmm;
+    @Column(name = "gravity_mix_maximum")
+    private double gravityMixMaximum;
 
     //Партия
-    @Transient
+    @ManyToOne
+    @JoinColumn(name = "batch_id", referencedColumnName = "id")
     private Batch batchSource;
 
     //Метод кладет в LinkedHashMap значения частных остатков на ситах
@@ -122,7 +123,7 @@ public class HotMixTestResult {
     }
 
     public double getVoids() {
-        double voids = (1 - (this.gmb / this.gmm)) * 100;
+        double voids = (1 - (this.gravityMixBulk / this.gravityMixMaximum)) * 100;
         return roundDoubleOne(voids);
     }
 

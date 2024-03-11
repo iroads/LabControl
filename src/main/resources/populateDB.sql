@@ -15,7 +15,7 @@ insert into plant (model, location, productivity, unit_id) values ('TTM GLB-2000
 insert into plant (model, location, productivity, unit_id) values ('TTM GLB-2000', 'г.Баймак', 160, 3);
 
 
-insert into hot_mix_test_result (chog315, chog224, chog16, chog112, chog8, chog56, chog4, chog2, chog1, chog05, chog025, chog0125, chog0063, dno, gmb, gmm)
+insert into hot_mix_test_result (chog315, chog224, chog16, chog112, chog8, chog56, chog4, chog2, chog1, chog05, chog025, chog0125, chog0063, dno, gravity_mix_bulk, gravity_mix_maximum)
 values (0,0,106,408,410,0,372,288,198,124,80,42,50,141, 2.455, 2.599);
 delete from hot_mix_test_result where id = 3;
 

@@ -12,4 +12,5 @@ public interface BatchRepository extends JpaRepository<Batch, Integer> {
 
     List<Batch> findAllByBatchCreator_Unit(Unit unit);
     List<Batch> findAllByOwnUnit(Unit unit);
+
 }

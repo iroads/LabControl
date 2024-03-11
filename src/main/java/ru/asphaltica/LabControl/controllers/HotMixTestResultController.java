@@ -3,10 +3,7 @@ package ru.asphaltica.LabControl.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.asphaltica.LabControl.models.*;
 import ru.asphaltica.LabControl.services.BatchService;
 import ru.asphaltica.LabControl.services.HotMixTestResultService;
@@ -28,6 +25,12 @@ public class HotMixTestResultController {
     public String showResultsList(Model model) {
         model.addAttribute("results", hotMixTestResultService.findAll());
         return "result/results_list";
+    }
+
+    @GetMapping("/{id}")
+    public String show(@PathVariable("id") int id, Model model) {
+        model.addAttribute("result", hotMixTestResultService.findById(id));
+        return "result/show";
     }
 
     @GetMapping("/new")
@@ -57,5 +60,11 @@ public class HotMixTestResultController {
         model.addAttribute("batchSource", result.getBatchSource());
         model.addAttribute("result", result);
         return "result/new_step2";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
+        hotMixTestResultService.deleteById(id);
+        return "redirect:/results";
     }
 }

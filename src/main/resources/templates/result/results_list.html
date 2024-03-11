@@ -7,14 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
           crossorigin="anonymous">
-    <style type="text/css">
-        td, th {
-            border: 1px solid black;
-        }
-    </style>
+    <title>Результаты испытаний</title>
 </head>
-<title>Результаты испытаний</title>
-</head>
+
 <body>
 <div th:insert="~{parts/navbar :: navbar}"></div>
 <br>
@@ -25,41 +20,43 @@
         <button type="submit" class="btn btn-primary">Добавить результаты испытания</button>
     </form>
 </div>
-<p>Результаты испытаний</p>
 <br>
-<div th:each="result : ${results}">
-    <!--  <a th:href="@{/results/{id}(id = ${result.getId()})}" th:text="${result.getId()}"></a>-->
-    <table>
-        <caption>Зерновой состав смеси</caption>
+<div class="container">
+    <table class="table table-striped table-bordered caption-top">
+        <caption>Список результатов испытаний</caption>
+        <thead>
         <tr>
-            <th>id</th>
-            <th>Размер ячейки,мм</th>
-            <div th:each="entry : ${result.getCHOGS().entrySet()}">
-                <th th:text="${entry.getKey().getSize()}"></th>
-            </div>
+            <th class="text-center" scope="col">id</th>
+            <th scope="col">Смесь</th>
+            <!--        <th scope="col">Дата создания</th>-->
+            <th class="text-center" scope="col">Редактировать</th>
+            <th class="text-center" scope="col">Удалить</th>
         </tr>
-        <tr>
-            <td></td>
-            <td>Ч/О,%</td>
-            <div th:each="entry : ${result.getCHOPS().entrySet()}">
-                <th th:text="${entry.getValue()}"></th>
-            </div>
-        </tr>
-        <tr>
-            <td></td>
-            <td>ПП,%</td>
-            <div th:each="entry : ${result.getPP().entrySet()}">
-                <th th:text="${entry.getValue()}"></th>
-            </div>
-        </tr>
+        </thead>
+        <tbody>
+        <div th:each="result : ${results}">
+            <tr>
+                <th class="text-center" scope="row">
+                    <a th:href="@{/results/{id}(id = ${result.getId()})}" th:text="${result.getId()}"></a>
+                </th>
+                            <td th:text="${result.getBatchSource().getRecipeSource().getMixTitle()}"></td>
+                <!--            <td th:text="${result.getCreateDate()}"></td>-->
+                <td class="text-center">
+                    <form th:method="GET" th:action="@{/results/{id}/edit(id=${result.getId()})}">
+                        <button type="submit" class="btn btn-success btn-sm">Редактировать</button>
+                    </form>
+                </td>
+                <td class="text-center">
+                    <form th:method="DELETE" th:action="@{/results/{id}(id=${result.getId()})}">
+                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                    </form>
+                </td>
+
+            </tr>
+        </div>
+        </tbody>
     </table>
-    <br>
-    <p th:text="'Максимальная плотность смеси, г/см3: ' + ${result.getGmm()}"></p>
-    <p th:text="'Объемная плотность, г/см3: ' + ${result.getGmb()}"></p>
-    <p th:text="'Содержание воздушных пустот, %: ' + ${result.getVoids()}"></p>
-
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
