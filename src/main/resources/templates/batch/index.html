@@ -17,7 +17,37 @@
         <button type="submit" class="btn btn-primary">Добавить новую партию</button>
     </form>
     <br>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>
+                <form th:method="GET" th:action="@{/batches/choose_recipe}">
+                    <button type="submit" class="btn btn-primary">Выбрать рецепт</button>
+                </form>
+            </td>
+            <td>
+                <form th:method="GET" th:action="@{/batches}">
+                    <input type="hidden" th:name="recipe_source" th:value="${null}">
+                    <button type="submit" class="btn btn-primary">Снять выбор</button>
+                </form>
+            </td>
+            <div th:if="${choseRecipe != null}">
+                <td>
+                    <p th:text="'    Рецепт №' + ${choseRecipe.getId()}"></p>
+                </td>
+                <td>
+                    <p th:text="'Смесь ' + ${choseRecipe.getMixTitle()}"></p>
+                </td>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <br>
     <form th:method="GET" th:action="@{/batches}">
+        <input type="hidden" th:name="recipe_source" th:value="${choseRecipe == null ? 0 : choseRecipe.getId()}">
         <label for="startDate">Начальная дата: </label>
         <input class="form-control" th:value="${start_date}" type="date" id="startDate" name="start_date"/>
         <br>
@@ -32,6 +62,17 @@
             </option>
             <option th:each="unit : ${units}" th:value="${unit.getId()}" th:text="${unit.getName()}"
                     th:selected="${selected_unit_from_controller.orElse(0) == unit.getId()}">
+            </option>
+        </select>
+        <br>
+        <label for="plant">Асфальтосмесительная установка: </label>
+        <select class="form-select" id="plant" name="selected_plant_to_controller">
+            <option th:value="${0}"
+                    th:selected="${!selected_plant_from_controller.isPresent() || selected_plant_from_controller.get() == 0}">
+                Не выбрано
+            </option>
+            <option th:each="plant : ${plants}" th:value="${plant.getId()}" th:text="${plant.getModel()}"
+                    th:selected="${selected_plant_from_controller.orElse(0) == plant.getId()}">
             </option>
         </select>
         <br>

@@ -75,7 +75,6 @@ public class RecipeController {
         model.addAttribute("selected_unit_from_controller", selectedToControllerUnit);
         model.addAttribute("choosingType", choosingTypeToController.isPresent() ? choosingTypeToController.get() : ChoosingType.nothing);
         model.addAttribute("ChoosingType", ChoosingType.class);
-
         return "recipe/index";
     }
 

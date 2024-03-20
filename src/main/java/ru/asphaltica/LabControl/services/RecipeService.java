@@ -1,5 +1,6 @@
 package ru.asphaltica.LabControl.services;
 
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,39 +33,13 @@ public class RecipeService {
         this.unitRepository = unitRepository;
     }
 
-
     public List<Recipe> findAllCustom(LocalDateTime startDate, LocalDateTime endDate, String mixType, String mixLayer, String mixTraffic, Unit unit) {
         List<Recipe> recipes = recipeRepository.findAll(Specification.allOf(
-                (root, query, criterialBuilder) -> {
-                    if (startDate == null) {
-                        return null;
-                    }
-                    return criterialBuilder.between(root.get("createDate"), startDate, endDate);
-                },
-                (root, query, criterialBuilder) -> {
-                    if (mixType == null) {
-                        return null;
-                    }
-                    return criterialBuilder.equal(root.get("mixType"), MixType.findValueByType(mixType));
-                },
-                (root, query, criterialBuilder) -> {
-                    if (mixLayer == null) {
-                        return null;
-                    }
-                    return criterialBuilder.equal(root.get("mixLayer"), MixLayer.findValueByLayer(mixLayer));
-                },
-                (root, query, criterialBuilder) -> {
-                    if (mixTraffic == null) {
-                        return null;
-                    }
-                    return criterialBuilder.equal(root.get("mixTraffic"), MixTraffic.findValueByTraffic(mixTraffic));
-                },
-                (root, query, criterialBuilder) -> {
-                    if (unit == null) {
-                        return null;
-                    }
-                    return criterialBuilder.equal(root.get("unit"), unit);
-                }
+                (root, query, criterialBuilder) -> criterialBuilder.between(root.get("createDate"), startDate, endDate),
+                (root, query, criterialBuilder) -> mixType == null ? null : criterialBuilder.equal(root.get("mixType"), MixType.findValueByType(mixType)),
+                (root, query, criterialBuilder) -> mixLayer == null ? null : criterialBuilder.equal(root.get("mixLayer"), MixLayer.findValueByLayer(mixLayer)),
+                (root, query, criterialBuilder) -> mixTraffic == null ? null : criterialBuilder.equal(root.get("mixTraffic"), MixTraffic.findValueByTraffic(mixTraffic)),
+                (root, query, criterialBuilder) -> unit == null ? null : criterialBuilder.equal(root.get("unit"), unit)
         ), Sort.by("id"));
         return recipes;
     }

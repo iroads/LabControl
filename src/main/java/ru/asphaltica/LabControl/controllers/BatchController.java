@@ -67,6 +67,12 @@ public class BatchController {
         return unitService.findAll();
     }
 
+    @ModelAttribute(name = "plants")
+    public List<Plant> plants() {
+        return plantService.findAll();
+    }
+
+
     @GetMapping()
     public String index(Model model, @ModelAttribute("authUser") User authUser,
                         @RequestParam(value = "start_date") Optional<String> startDate,
@@ -74,7 +80,9 @@ public class BatchController {
                         @RequestParam(value = "mix_type") Optional<String> mixType,
                         @RequestParam(value = "mix_layer") Optional<String> mixLayer,
                         @RequestParam(value = "mix_traffic") Optional<String> mixTraffic,
-                        @RequestParam(value = "selected_unit_to_controller") Optional<Integer> selectedToControllerUnit) {
+                        @RequestParam(value = "selected_unit_to_controller") Optional<Integer> selectedToControllerUnit,
+                        @RequestParam(value = "selected_plant_to_controller") Optional<Integer> selectedToControllerPlant,
+                        @RequestParam(value = "recipe_source") Optional<Integer> recipeSourceId) {
 
         String start = startDate.orElse(null);
         LocalDate localDateStart = DateTimeUtil.parseLocalDate(start);
@@ -84,18 +92,34 @@ public class BatchController {
         LocalDate localDateEnd = DateTimeUtil.parseLocalDate(end);
         LocalDateTime localDateTimeEnd = DateTimeUtil.atStartOfNextDayOrMax(localDateEnd);
 
-        //Найти все партии
-        //model.addAttribute("batches", batchService.findAll());
-        //Найти все партии филиала в котором работает сотрудник
-        Unit unit = authUser.getUnit();
-        model.addAttribute("batches", batchService.findAllByOwnUnit(unit));
+        Recipe choseRecipe = recipeService.findById(recipeSourceId.orElse(0));
+
+
+        //Unit unit = authUser.getUnit();
+        Unit ownUnit = unitService.findById(selectedToControllerUnit.orElse(0));
+        Plant ownPlant = plantService.findById(selectedToControllerPlant.orElse(0));
+        model.addAttribute("batches", batchService.findAllCustom(choseRecipe, ownUnit, ownPlant,  localDateTimeStart, localDateTimeEnd));
         model.addAttribute("start_date", start);
         model.addAttribute("end_date", end);
         model.addAttribute("mix_type", mixType);
         model.addAttribute("mix_layer", mixLayer);
         model.addAttribute("mix_traffic", mixTraffic);
         model.addAttribute("selected_unit_from_controller", selectedToControllerUnit);
+        model.addAttribute("selected_plant_from_controller", selectedToControllerPlant);
+        model.addAttribute("choseRecipe", choseRecipe);
         return "/batch/index";
+    }
+
+    @GetMapping("/choose_recipe")
+    public String getRecipeForFindBatch(Model model, @ModelAttribute("recipe") Recipe recipe) {
+        model.addAttribute("recipes", recipeService.findAll());
+        model.addAttribute("mix_type", Optional.empty());
+        model.addAttribute("mix_layer", Optional.empty());
+        model.addAttribute("mix_traffic", Optional.empty());
+        model.addAttribute("selected_unit_from_controller", Optional.empty());
+        model.addAttribute("choosingType", ChoosingType.choosingForFindBatch);
+        model.addAttribute("ChoosingType", ChoosingType.class);
+        return "recipe/index";
     }
 
     @GetMapping("/new_step1")
@@ -108,8 +132,6 @@ public class BatchController {
         model.addAttribute("selected_unit_from_controller", Optional.empty());
         model.addAttribute("choosingType", ChoosingType.choosingForNewBatch);
         model.addAttribute("ChoosingType", ChoosingType.class);
-
-        //return "batch/new_step1";
         return "recipe/index";
     }
 
