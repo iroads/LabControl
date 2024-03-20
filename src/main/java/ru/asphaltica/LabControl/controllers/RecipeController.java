@@ -14,6 +14,7 @@ import ru.asphaltica.LabControl.security.PersonDetails;
 import ru.asphaltica.LabControl.services.RecipeService;
 import ru.asphaltica.LabControl.services.UnitService;
 import ru.asphaltica.LabControl.util.DateTimeUtil;
+import ru.asphaltica.LabControl.util.enums.ChoosingType;
 import ru.asphaltica.LabControl.util.enums.MixLayer;
 import ru.asphaltica.LabControl.util.enums.MixTraffic;
 import ru.asphaltica.LabControl.util.enums.MixType;
@@ -48,9 +49,8 @@ public class RecipeController {
                         @RequestParam(value = "mix_type") Optional<String> mixType,
                         @RequestParam(value = "mix_layer") Optional<String> mixLayer,
                         @RequestParam(value = "mix_traffic") Optional<String> mixTraffic,
-                        @ModelAttribute("mixTypes") MixType[] mixTypes,
-                        @ModelAttribute("mixLayers") MixLayer[] mixLayers,
-                        @ModelAttribute("mixTraffics") MixTraffic[] mixTraffics) {
+                        @RequestParam(value = "selected_unit_to_controller") Optional<Integer> selectedToControllerUnit,
+                        @RequestParam(value = "choosing_type_to_controller") Optional<ChoosingType> choosingTypeToController) {
 
         String start = startDate.orElse(null);
         LocalDate localDateStart = DateTimeUtil.parseLocalDate(start);
@@ -63,25 +63,25 @@ public class RecipeController {
         String mixTypeS = mixType.map(t -> t.isEmpty() ? null : t).orElse(null);
         String mixLayerS = mixLayer.map(t -> t.isEmpty() ? null : t).orElse(null);
         String mixTrafficS = mixTraffic.map(t -> t.isEmpty() ? null : t).orElse(null);
+        int unitId = selectedToControllerUnit.orElse(0);
 
         model.addAttribute("recipes",
-                recipeService.findAll1(localDateTimeStart, localDateTimeEnd, mixTypeS, mixLayerS, mixTrafficS, unitService.findById(3)));
+                recipeService.findAllCustom(localDateTimeStart, localDateTimeEnd, mixTypeS, mixLayerS, mixTrafficS, unitService.findById(unitId)));
         model.addAttribute("start_date", start);
         model.addAttribute("end_date", end);
         model.addAttribute("mix_type", mixType);
         model.addAttribute("mix_layer", mixLayer);
         model.addAttribute("mix_traffic", mixTraffic);
+        model.addAttribute("selected_unit_from_controller", selectedToControllerUnit);
+        model.addAttribute("choosingType", choosingTypeToController.isPresent() ? choosingTypeToController.get() : ChoosingType.nothing);
+        model.addAttribute("ChoosingType", ChoosingType.class);
 
         return "recipe/index";
     }
 
 
     @GetMapping("/new")
-    public String newRecipe(@ModelAttribute("recipe") Recipe recipe,
-                            @ModelAttribute("mixTypes") MixType[] mixTypes,
-                            @ModelAttribute("mixLayers") MixLayer[] mixLayers,
-                            @ModelAttribute("mixTraffics") MixTraffic[] mixTraffics,
-                            @ModelAttribute("units") List<Unit> units) {
+    public String newRecipe(@ModelAttribute("recipe") Recipe recipe) {
         return "recipe/new";
     }
 

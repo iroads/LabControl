@@ -1,6 +1,7 @@
 package ru.asphaltica.LabControl.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class RecipeService {
     }
 
 
-    public List<Recipe> findAll1(LocalDateTime startDate, LocalDateTime endDate, String mixType, String mixLayer, String mixTraffic, Unit unit) {
+    public List<Recipe> findAllCustom(LocalDateTime startDate, LocalDateTime endDate, String mixType, String mixLayer, String mixTraffic, Unit unit) {
         List<Recipe> recipes = recipeRepository.findAll(Specification.allOf(
                 (root, query, criterialBuilder) -> {
                     if (startDate == null) {
@@ -64,9 +65,7 @@ public class RecipeService {
                     }
                     return criterialBuilder.equal(root.get("unit"), unit);
                 }
-        ));
-//        int unitid = 3;
-//        List<Recipe> recipes = recipeRepository.findAllRecipeJoinUnit(startDate, endDate, mixType, "Уфимское ДРСУ");
+        ), Sort.by("id"));
         return recipes;
     }
 

@@ -11,8 +11,17 @@ import ru.asphaltica.LabControl.security.PersonDetails;
 import ru.asphaltica.LabControl.services.BatchService;
 import ru.asphaltica.LabControl.services.PlantService;
 import ru.asphaltica.LabControl.services.RecipeService;
+import ru.asphaltica.LabControl.services.UnitService;
+import ru.asphaltica.LabControl.util.DateTimeUtil;
+import ru.asphaltica.LabControl.util.enums.ChoosingType;
+import ru.asphaltica.LabControl.util.enums.MixLayer;
+import ru.asphaltica.LabControl.util.enums.MixTraffic;
+import ru.asphaltica.LabControl.util.enums.MixType;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/batches")
@@ -21,12 +30,14 @@ public class BatchController {
     private final BatchService batchService;
     private final PlantService plantService;
     private final RecipeService recipeService;
+    private final UnitService unitService;
 
     @Autowired
-    public BatchController(BatchService batchService, PlantService plantService, RecipeService recipeService) {
+    public BatchController(BatchService batchService, PlantService plantService, RecipeService recipeService, UnitService unitService) {
         this.batchService = batchService;
         this.plantService = plantService;
         this.recipeService = recipeService;
+        this.unitService = unitService;
     }
 
     @ModelAttribute(name = "authUser")
@@ -36,13 +47,54 @@ public class BatchController {
         return personDetails.getUser();
     }
 
+    @ModelAttribute(name = "mixTypes")
+    public MixType[] mixTypes() {
+        return MixType.values();
+    }
+
+    @ModelAttribute(name = "mixLayers")
+    public MixLayer[] mixLayers() {
+        return MixLayer.values();
+    }
+
+    @ModelAttribute(name = "mixTraffics")
+    public MixTraffic[] mixTraffics() {
+        return MixTraffic.values();
+    }
+
+    @ModelAttribute(name = "units")
+    public List<Unit> units() {
+        return unitService.findAll();
+    }
+
     @GetMapping()
-    public String index(Model model, @ModelAttribute("authUser") User authUser) {
+    public String index(Model model, @ModelAttribute("authUser") User authUser,
+                        @RequestParam(value = "start_date") Optional<String> startDate,
+                        @RequestParam(value = "end_date") Optional<String> endDate,
+                        @RequestParam(value = "mix_type") Optional<String> mixType,
+                        @RequestParam(value = "mix_layer") Optional<String> mixLayer,
+                        @RequestParam(value = "mix_traffic") Optional<String> mixTraffic,
+                        @RequestParam(value = "selected_unit_to_controller") Optional<Integer> selectedToControllerUnit) {
+
+        String start = startDate.orElse(null);
+        LocalDate localDateStart = DateTimeUtil.parseLocalDate(start);
+        LocalDateTime localDateTimeStart = DateTimeUtil.atStartOfDayOrMin(localDateStart);
+
+        String end = endDate.orElse(null);
+        LocalDate localDateEnd = DateTimeUtil.parseLocalDate(end);
+        LocalDateTime localDateTimeEnd = DateTimeUtil.atStartOfNextDayOrMax(localDateEnd);
+
         //Найти все партии
         //model.addAttribute("batches", batchService.findAll());
         //Найти все партии филиала в котором работает сотрудник
         Unit unit = authUser.getUnit();
         model.addAttribute("batches", batchService.findAllByOwnUnit(unit));
+        model.addAttribute("start_date", start);
+        model.addAttribute("end_date", end);
+        model.addAttribute("mix_type", mixType);
+        model.addAttribute("mix_layer", mixLayer);
+        model.addAttribute("mix_traffic", mixTraffic);
+        model.addAttribute("selected_unit_from_controller", selectedToControllerUnit);
         return "/batch/index";
     }
 
@@ -50,7 +102,15 @@ public class BatchController {
     public String newBatchStep1(Model model, @ModelAttribute("recipe") Recipe recipe,
                                 @ModelAttribute("batch") Batch batch) {
         model.addAttribute("recipes", recipeService.findAll());
-        return "batch/new_step1";
+        model.addAttribute("mix_type", Optional.empty());
+        model.addAttribute("mix_layer", Optional.empty());
+        model.addAttribute("mix_traffic", Optional.empty());
+        model.addAttribute("selected_unit_from_controller", Optional.empty());
+        model.addAttribute("choosingType", ChoosingType.choosingForNewBatch);
+        model.addAttribute("ChoosingType", ChoosingType.class);
+
+        //return "batch/new_step1";
+        return "recipe/index";
     }
 
     @GetMapping("/new_step2")
