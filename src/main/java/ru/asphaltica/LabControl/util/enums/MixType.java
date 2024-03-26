@@ -4,12 +4,12 @@ import java.util.Arrays;
 
 public enum MixType {
 
-    A5("A5"),
-    A8("A8"),
-    A11("A11"),
-    A16("A16"),
-    A22("A22"),
-    A32("A32");
+    A5("А5"),
+    A8("А8"),
+    A11("А11"),
+    A16("А16"),
+    A22("А22"),
+    A32("А32");
 
     private String type;
 

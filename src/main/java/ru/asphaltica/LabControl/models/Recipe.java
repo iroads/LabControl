@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class Recipe {
 
+    @Transient
+    private final static double GRAVITY_BITUMEN = 1.0;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -191,20 +194,28 @@ public class Recipe {
     public double getVoids() {
         return Rounder.roundDouble(1,(1-(gravityMixBulk/gravityMixMaximum))*100);
     }
-    //Расчет пористости минерального заполнителя
-    public double getPMZ() {
+
+    //Расчет общей объемной плотности минерального заполнителя
+    public double getGravityStoneBulk() {
         //Числитель формулы
-        double summa = getMinerals().stream().mapToDouble(mineral -> mineral.getPercentage()).sum();
+        double summa = getMinerals().stream().mapToDouble(Mineral::getPercentage).sum();
         //Знаменатель формулы
         double percentageDiviedByGravity = getMinerals().stream().filter(mineral -> mineral.getPercentage() !=0)
                 .mapToDouble(mineral -> mineral.getPercentage()/(mineral.getGravityStoneAverage() == 0 ?
                         mineral.getGravityStoneApparent()
                         : mineral.getGravityStoneAverage())).sum();
+        return Rounder.roundDouble(3,summa/percentageDiviedByGravity);
+    }
+    //Расчет пористости минерального заполнителя
+    public double getPMZ() {
         //Общая объемная плотность каменных материалов
-        double gravityStoneBulk = Rounder.roundDouble(3,summa/percentageDiviedByGravity);
-        //Количество минерального заполнителя в асфальтобетонной смеси с учетом содержания битумного вяжущего, включенного в 100% состава смеси, доли единиц
-        double pStone = Rounder.roundDouble(3,(100 - getBitumenPercentageIn100())/100);
-        return Rounder.roundDouble(1, (1 - gravityMixBulk*pStone/gravityStoneBulk)*100);
+        double gravityStoneBulk = getGravityStoneBulk();
+        return Rounder.roundDouble(1, (1 - gravityMixBulk*getPStone()/gravityStoneBulk)*100);
+    }
+
+    //Расчет количества минерального заполнителя в асфальтобетонной смеси с учетом содержания битумного вяжущего, включенного в 100% состава смеси, доли единиц
+    public double getPStone(){
+        return Rounder.roundDouble(4,(100 - getBitumenPercentageIn100())/100);
     }
 
     //Расчет содержания битума в 100% асфальтобетонной смеси
@@ -217,6 +228,12 @@ public class Recipe {
         double pmz = getPMZ();
         double voids = getVoids();
         return Rounder.roundDouble(1, ((pmz - voids) / pmz)*100);
+    }
+
+    //Расчет эффективной плотности минерального заполнителя
+    public double getGravityStoneEffective(){
+        double gravityStoneEffective = Rounder.roundDouble(3, getPStone()/((1/this.gravityMixMaximum) - ((1-getPStone())/GRAVITY_BITUMEN)));
+        return gravityStoneEffective;
     }
 
     //Получение полного названия смеси

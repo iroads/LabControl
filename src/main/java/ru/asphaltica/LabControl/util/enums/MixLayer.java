@@ -3,9 +3,9 @@ package ru.asphaltica.LabControl.util.enums;
 import java.util.Arrays;
 
 public enum MixLayer {
-    O("O"),
-    N("H"),
-    V("B");
+    O("О"),
+    N("Н"),
+    V("В");
 
     private String layer;
 

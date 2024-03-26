@@ -4,10 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.asphaltica.LabControl.util.Rounder;
 import ru.asphaltica.LabControl.util.Sito;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 
 @Data
@@ -16,6 +15,10 @@ import java.util.*;
 @Entity
 @Table(name = "hot_mix_test_result")
 public class HotMixTestResult {
+
+    @Transient
+    private final static double GRAVITY_BITUMEN = 1.0;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +60,25 @@ public class HotMixTestResult {
     @Column(name = "gravity_mix_maximum")
     private double gravityMixMaximum;
 
+    //Масса пустой корзины для выжигания
+    @Transient
+    private double weightOfBasket;
+    //Масса корзины со смесью
+    @Transient
+    private double weightOfBasketAndMix;
+    //Масса корзины со смесью после выжигания
+    @Transient
+    private double weighOfBasketAndMixAfterBurn;
+
+    //Поправка к содержанию битума определенному при выжигании на выгорание каменного материала
+    //назначается пользователем на основе опыта
+    @Transient
+    private double correctionBitumenStoneBurn;
+
+    @Transient
+    private double bitumenPercentageIn100User;
+
+
     //Партия
     @ManyToOne
     @JoinColumn(name = "batch_id", referencedColumnName = "id")
@@ -89,18 +111,21 @@ public class HotMixTestResult {
         for (Map.Entry<Sito, Double> entry : this.getCHOGS().entrySet()) {
             summaCHOG = summaCHOG + entry.getValue();
         }
-        //Рассчитываем частные остатки в % и кладем их в отдельный LinkedHashMap
+
         Map<Sito, Double> chopMap = new LinkedHashMap<>();
-        double summaCHOP = 0;
-        for (Map.Entry<Sito, Double> entry : this.getCHOGS().entrySet()) {
-            double chop = entry.getValue() * 100 / summaCHOG;
-            chop = roundDoubleTwo(chop);
-            chopMap.put(entry.getKey(), chop);
-            summaCHOP = summaCHOP + chop;
-        }
-        //Проверяем равна ли сумма частных остатков в % 100%, если нет то уравниваем до 100% добавлением разницы на DNO
-        if (summaCHOP != 100.0) {
-            chopMap.put(Sito.DNO, roundDoubleTwo(chopMap.get(Sito.DNO) + 100 - summaCHOP));
+        if (summaCHOG == 0.0) {
+            for (Sito sito : Sito.values()) {
+                chopMap.put(sito, 0.0);
+            }
+        } else {
+            //Рассчитываем частные остатки в % и кладем их в отдельный LinkedHashMap
+            double summaCHOP = 0;
+            for (Map.Entry<Sito, Double> entry : this.getCHOGS().entrySet()) {
+                double chop = entry.getValue() * 100 / summaCHOG;
+                chop = Rounder.roundDouble(2, chop);
+                chopMap.put(entry.getKey(), chop);
+                summaCHOP = summaCHOP + chop;
+            }
         }
         return chopMap;
     }
@@ -111,31 +136,91 @@ public class HotMixTestResult {
         Map<Sito, Double> chopMap = this.getCHOPS();
         List<Sito> keys = new ArrayList<>(chopMap.keySet());
         Map<Sito, Double> ppMap = new LinkedHashMap<>();
-        for (Sito sito : keys) {
-            ppMap.put(sito, 0.0);
-        }
-
         for (int i = keys.size() - 1; i >= 0; i--) {
-            ppMap.put(keys.get(i), roundDoubleTwo(summaPP));
+            ppMap.put(keys.get(i), Rounder.roundDouble(2, summaPP));
             summaPP = summaPP + chopMap.get(keys.get(i));
         }
         return ppMap;
     }
 
     public double getVoids() {
-        double voids = (1 - (this.gravityMixBulk / this.gravityMixMaximum)) * 100;
-        return roundDoubleOne(voids);
+        return this.gravityMixMaximum == 0 ? 0 : Rounder.roundDouble(1, (1 - (this.gravityMixBulk / this.gravityMixMaximum)) * 100);
     }
 
-    //Метод для огругления чисел до второго знака после запятой
-    private double roundDoubleTwo(double number) {
-        BigDecimal bigDecimal = new BigDecimal(number);
-        return bigDecimal.setScale(2, RoundingMode.UP).doubleValue();
+    //Расчет содержания вяжущего в смеси по результатам выжигания
+    public double getBitumenPercentageIn100Burn() {
+        double weightOfMix = weightOfBasketAndMix - weightOfBasket;
+        double weigthOfMixAfterBurn = weighOfBasketAndMixAfterBurn - weightOfBasket;
+        return Rounder.roundDouble(2, (weightOfMix - weigthOfMixAfterBurn) / weightOfMix * 100);
     }
 
-    //Метод для огругления чисел до первого знака после запятой
-    private double roundDoubleOne(double number) {
-        BigDecimal bigDecimal = new BigDecimal(number);
-        return bigDecimal.setScale(1, RoundingMode.UP).doubleValue();
+    //Расчет содержания вяжущего по данным рецепта и максимальной плотности пробы
+    public double getBitumenPercentageIn100Gmm() {
+        double gravityStoneEffective = batchSource.getRecipeSource().getGravityStoneEffective();
+        double bitumenPercentageIn100Gmm = Rounder.roundDouble(2, ((gravityStoneEffective * GRAVITY_BITUMEN * 100 / gravityMixMaximum) - (GRAVITY_BITUMEN * 100)) / (gravityStoneEffective - GRAVITY_BITUMEN));
+        return bitumenPercentageIn100Gmm;
+    }
+
+    //Расчет содержания вяжущего в смеси по результатам выжигания с корректировкой на выгорание материала
+    public double getBitumenPercentageIn100BurnCorr() {
+        return Rounder.roundDouble(2, getBitumenPercentageIn100Burn() - correctionBitumenStoneBurn);
+    }
+
+    //Расчет пористости минерального заполнителя
+    public double getPMZ(double pStone) {
+        double gravityStoneBulk = batchSource.getRecipeSource().getGravityStoneBulk();
+        return gravityStoneBulk == 0 ? 0.0 : Rounder.roundDouble(1, 100 * (1 - ((gravityMixBulk * pStone) / gravityStoneBulk)));
+    }
+
+    //Расчет пустот наполненных битумом
+    public double getPNB(double PMZ) {
+        return Rounder.roundDouble(1, 100*(PMZ - getVoids())/PMZ);
+    }
+
+    //Расчет пористости минерального заполнителя на основе содержания битума определенного при выжигании
+    public double getPMZ_BitumenBurn() {
+        return getPMZ(getPStone(getBitumenPercentageIn100Burn()));
+    }
+
+    //ПНВ при вышеуказанном ПМЗ
+    public double getPNB_BitumenBurn(){
+        return getPNB(getPMZ_BitumenBurn());
+    }
+
+    //Расчет пористости минерального заполнителя на основе содержания битума определенного по данным рецепта и максимальной плотности образца
+    public double getPMZ_BitumenGmm() {
+        return getPMZ(getPStone(getBitumenPercentageIn100Gmm()));
+    }
+
+    //ПНВ при вышеуказанном ПМЗ
+    public double getPNB_BitumenGmm(){
+        return getPNB(getPMZ_BitumenGmm());
+    }
+
+    //Расчет пористости минерального заполнителя на основе содержания битума определенного при выжигании с корректировкой на выгорание материала
+    public double getPMZ_BitumenBurnCorr() {
+        return getPMZ(getPStone(getBitumenPercentageIn100BurnCorr()));
+    }
+
+    //ПНВ при вышеуказанном ПМЗ
+    public double getPNB_BitumenBurnCorr(){
+        return getPNB(getPMZ_BitumenBurnCorr());
+    }
+
+    //Расчет пористости минерального заполнителя на основе содержания битума определенного при выжигании с корректировкой на выгорание материала
+    public double getPMZ_BitumenUser() {
+        return getPMZ(getPStone(bitumenPercentageIn100User));
+    }
+
+    //ПНВ при вышеуказанном ПМЗ
+    public double getPNB_BitumenUser(){
+        return getPNB(getPMZ_BitumenUser());
+    }
+
+
+
+    //Расчет содержания минерального заполнителя в долях 1
+    public double getPStone(double bitumenPercentageIn100) {
+        return Rounder.roundDouble(4, (100 - bitumenPercentageIn100) / 100);
     }
 }

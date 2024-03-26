@@ -6,7 +6,11 @@ import java.math.RoundingMode;
 public class Rounder {
     //Метод для огругления чисел до второго знака после запятой
     public static double roundDouble(int countAfterPoint, double number) {
-        BigDecimal bigDecimal = new BigDecimal(number);
-        return bigDecimal.setScale(countAfterPoint, RoundingMode.HALF_UP).doubleValue();
+        if (number != 0.0) {
+            BigDecimal bigDecimal = new BigDecimal(number);
+            return bigDecimal.setScale(countAfterPoint, RoundingMode.HALF_UP).doubleValue();
+        } else {
+            return number;
+        }
     }
 }
