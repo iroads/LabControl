@@ -51,6 +51,12 @@ create table hot_mix_test_result
     chog315  decimal(6, 2),
     gravity_mix_bulk      decimal(4, 3),
     gravity_mix_maximum      decimal(4, 3),
+    voids decimal (3,1),
+    weight_of_basket decimal(7,2),
+    weight_of_basket_and_mix decimal(7,2),
+    weight_of_basket_and_mix_after_burn decimal(7,2),
+    correction_bitumen_stone_burn decimal(3,2),
+    bitumen_percentage_in_100_user decimal(3,2),
     batch_id int REFERENCES batch (id) ON DELETE CASCADE
 );
 

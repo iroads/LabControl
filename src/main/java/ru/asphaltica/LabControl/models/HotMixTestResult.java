@@ -61,21 +61,21 @@ public class HotMixTestResult {
     private double gravityMixMaximum;
 
     //Масса пустой корзины для выжигания
-    @Transient
+    @Column(name = "weight_of_basket")
     private double weightOfBasket;
     //Масса корзины со смесью
-    @Transient
+    @Column(name = "weight_of_basket_and_mix")
     private double weightOfBasketAndMix;
     //Масса корзины со смесью после выжигания
-    @Transient
+    @Column(name = "weight_of_basket_and_mix_after_burn")
     private double weightOfBasketAndMixAfterBurn;
 
     //Поправка к содержанию битума определенному при выжигании на выгорание каменного материала
     //назначается пользователем на основе опыта
-    @Transient
+    @Column(name = "correction_bitumen_stone_burn")
     private double correctionBitumenStoneBurn;
-
-    @Transient
+    //Количество битума назначаемое пользователем, как наиболее вероятное исходя из анализа имеющихся данных
+    @Column(name = "bitumen_percentage_in_100_user")
     private double bitumenPercentageIn100User;
 
 
@@ -174,7 +174,7 @@ public class HotMixTestResult {
 
     //Расчет пустот наполненных битумом
     public double getPNB(double PMZ) {
-        return Rounder.roundDouble(1, 100*(PMZ - getVoids())/PMZ);
+        return Rounder.roundDouble(1, 100 * (PMZ - getVoids()) / PMZ);
     }
 
     //Расчет пористости минерального заполнителя на основе содержания битума определенного при выжигании
@@ -183,7 +183,7 @@ public class HotMixTestResult {
     }
 
     //ПНВ при вышеуказанном ПМЗ
-    public double getPNB_BitumenBurn(){
+    public double getPNB_BitumenBurn() {
         return getPNB(getPMZ_BitumenBurn());
     }
 
@@ -193,7 +193,7 @@ public class HotMixTestResult {
     }
 
     //ПНВ при вышеуказанном ПМЗ
-    public double getPNB_BitumenGmm(){
+    public double getPNB_BitumenGmm() {
         return getPNB(getPMZ_BitumenGmm());
     }
 
@@ -203,7 +203,7 @@ public class HotMixTestResult {
     }
 
     //ПНВ при вышеуказанном ПМЗ
-    public double getPNB_BitumenBurnCorr(){
+    public double getPNB_BitumenBurnCorr() {
         return getPNB(getPMZ_BitumenBurnCorr());
     }
 
@@ -213,10 +213,9 @@ public class HotMixTestResult {
     }
 
     //ПНВ при вышеуказанном ПМЗ
-    public double getPNB_BitumenUser(){
+    public double getPNB_BitumenUser() {
         return getPNB(getPMZ_BitumenUser());
     }
-
 
 
     //Расчет содержания минерального заполнителя в долях 1
