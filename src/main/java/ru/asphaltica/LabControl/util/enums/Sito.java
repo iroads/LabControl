@@ -1,4 +1,4 @@
-package ru.asphaltica.LabControl.util;
+package ru.asphaltica.LabControl.util.enums;
 
 public enum Sito {
     DNO("dno"),

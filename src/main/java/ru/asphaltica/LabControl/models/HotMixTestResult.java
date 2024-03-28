@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.asphaltica.LabControl.util.Rounder;
-import ru.asphaltica.LabControl.util.Sito;
+import ru.asphaltica.LabControl.util.enums.Sito;
 
 import java.util.*;
 
@@ -68,7 +68,7 @@ public class HotMixTestResult {
     private double weightOfBasketAndMix;
     //Масса корзины со смесью после выжигания
     @Transient
-    private double weighOfBasketAndMixAfterBurn;
+    private double weightOfBasketAndMixAfterBurn;
 
     //Поправка к содержанию битума определенному при выжигании на выгорание каменного материала
     //назначается пользователем на основе опыта
@@ -150,7 +150,7 @@ public class HotMixTestResult {
     //Расчет содержания вяжущего в смеси по результатам выжигания
     public double getBitumenPercentageIn100Burn() {
         double weightOfMix = weightOfBasketAndMix - weightOfBasket;
-        double weigthOfMixAfterBurn = weighOfBasketAndMixAfterBurn - weightOfBasket;
+        double weigthOfMixAfterBurn = weightOfBasketAndMixAfterBurn - weightOfBasket;
         return Rounder.roundDouble(2, (weightOfMix - weigthOfMixAfterBurn) / weightOfMix * 100);
     }
 

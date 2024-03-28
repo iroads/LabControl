@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.asphaltica.LabControl.models.mixComponents.*;
 import ru.asphaltica.LabControl.util.Rounder;
-import ru.asphaltica.LabControl.util.Sito;
+import ru.asphaltica.LabControl.util.enums.Sito;
 import ru.asphaltica.LabControl.util.enums.MineralTitle;
 import ru.asphaltica.LabControl.util.enums.MixLayer;
 import ru.asphaltica.LabControl.util.enums.MixTraffic;
@@ -16,7 +16,6 @@ import ru.asphaltica.LabControl.util.enums.MixType;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "recipe")

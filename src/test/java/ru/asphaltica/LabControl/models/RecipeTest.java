@@ -80,7 +80,7 @@ class RecipeTest {
     @Test
     void getMixTitle() {
         String expectedTitle = "А8НН";
-        Assertions.assertEquals(expectedTitle, recipe.getMixTitle());
+        assertEquals(expectedTitle, recipe.getMixTitle());
     }
 
     @Test

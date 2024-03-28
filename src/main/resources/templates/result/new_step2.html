@@ -22,42 +22,98 @@
             <thead>
             <tr>
                 <th class="text-center align-middle" scope="col">Размер ячейки, мм</th>
-                <th style="width: 6%" class="text-center align-middle " scope="col"
-                    th:each="sito : ${batchSource.getRecipeSource().getPP().keySet()}" th:text="${sito.getSize()}"></th>
+                <th class="text-center align-middle" scope="col">Частные остатки, г</th>
+                <th class="text-center align-middle" scope="col" colspan="2">Физические показатели</th>
             </tr>
+
             </thead>
             <tbody>
             <tr>
-                <th class="text-center align-middle" scope="col">Частные остатки, г</th>
-                <td style="width: 6%"><input th:field="*{chog315}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog224}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog16}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog112}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog8}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog56}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog4}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog2}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog1}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog05}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog025}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog0125}" type="text" class="form-control col-md-6"></td>
-                <td style="width: 6%"><input th:field="*{chog0063}" type="text" class="form-control col-md-6"></td>
-            </tr>
-            </tbody>
-        </table>
-
-        <table class="table table-striped table-bordered caption-top">
-            <caption>Физико-механические показатели</caption>
-            <tbody>
-            <tr>
-                <th class="text-center align-middle" scope="col">Объемная плотность, г/см3</th>
+                <th class="text-center align-middle" scope="col">31,5</th>
+                <td><input th:field="*{chog315}" type="text" class="form-control col-md-6"></td>
+                <th class="align-middle" scope="col">Объемная плотность, г/см3</th>
                 <td>
                     <input type="text" th:field="*{gravityMixBulk}" class="form-control col-md-6">
                 </td>
-                <th class="text-center align-middle" scope="col">Максимальная плотность, г/см3</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">22,4</th>
+                <td><input th:field="*{chog224}" type="text" class="form-control col-md-6"></td>
+                <th class="align-middle" scope="col">Максимальная плотность, г/см3</th>
                 <td>
                     <input type="text" th:field="*{gravityMixMaximum}" class="form-control col-md-6">
                 </td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">16</th>
+                <td><input th:field="*{chog16}" type="text" class="form-control col-md-6"></td>
+                <th class="text-center align-middle" scope="col" colspan="2">Результаты выжигания смеси</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">11,2</th>
+                <td><input th:field="*{chog112}" type="text" class="form-control col-md-6"></td>
+                <th class="align-middle" scope="col">Масса пустой корзины, г</th>
+                <td>
+                <input type="text" th:field="*{weightOfBasket}" class="form-control col-md-6">
+                </td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">8</th>
+                <td><input th:field="*{chog8}" type="text" class="form-control col-md-6"></td>
+                <th class="align-middle" scope="col">Масса корзины со смесью, г</th>
+                <td>
+                <input type="text" th:field="*{weightOfBasketAndMix}" class="form-control col-md-6">
+                </td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">5,6</th>
+                <td><input th:field="*{chog56}" type="text" class="form-control col-md-6"></td>
+                <th class="align-middle" scope="col">Масса корзины и смеси после выжигания, г</th>
+                <td>
+                <input type="text" th:field="*{weightOfBasketAndMixAfterBurn}" class="form-control col-md-6">
+                </td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">4</th>
+                <td><input th:field="*{chog4}" type="text" class="form-control col-md-6"></td>
+                <th class="text-center align-middle" scope="col" colspan="2">Поправка на выгорание материала</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">2</th>
+                <td><input th:field="*{chog2}" type="text" class="form-control col-md-6"></td>
+                <th class="align-middle" scope="col">Значение поправки, %</th>
+                <td>
+                    <input type="text" th:field="*{correctionBitumenStoneBurn}" class="form-control col-md-6">
+                </td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">1</th>
+                <td><input th:field="*{chog1}" type="text" class="form-control col-md-6"></td>
+                <th class="text-center align-middle" scope="col" colspan="2">Содержание битума назначенное пользователем</th>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">0,5</th>
+                <td><input th:field="*{chog05}" type="text" class="form-control col-md-6"></td>
+                <th class="align-middle" scope="col">Значение содержания битума в смеси, %</th>
+                <td>
+                    <input type="text" th:field="*{bitumenPercentageIn100User}" class="form-control col-md-6">
+                </td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">0,25</th>
+                <td><input th:field="*{chog025}" type="text" class="form-control col-md-6"></td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">0,125</th>
+                <td><input th:field="*{chog0125}" type="text" class="form-control col-md-6"></td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">0,063</th>
+                <td><input th:field="*{chog0063}" type="text" class="form-control col-md-6"></td>
+            </tr>
+            <tr>
+                <th class="text-center align-middle" scope="col">дно</th>
+                <td><input th:field="*{dno}" type="text" class="form-control col-md-6"></td>
             </tr>
             </tbody>
         </table>

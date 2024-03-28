@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.asphaltica.LabControl.models.mixComponents.Bitumen;
 import ru.asphaltica.LabControl.models.mixComponents.Mineral;
-import ru.asphaltica.LabControl.util.Sito;
+import ru.asphaltica.LabControl.util.enums.Sito;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,7 +90,7 @@ class HotMixTestResultTest {
 
         result.setWeightOfBasket(5000.2);
         result.setWeightOfBasketAndMix(10000.8);
-        result.setWeighOfBasketAndMixAfterBurn(9853.9);
+        result.setWeightOfBasketAndMixAfterBurn(9853.9);
 
         result.setCorrectionBitumenStoneBurn(0.3);
         result.setBitumenPercentageIn100User(4.5);
