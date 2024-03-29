@@ -31,6 +31,7 @@ public class HotMixTestResultService {
     }
     @Transactional
     public void save(HotMixTestResult result) {
+        result.setVoids(result.getVoids());
         hotMixTestResultRepository.save(result);
     }
 

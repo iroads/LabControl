@@ -40,24 +40,52 @@
     </table>
 
     <table class="table table-striped table-bordered caption-top">
-        <caption>Физико-механические показатели</caption>
+        <caption>Физические показатели</caption>
         <tbody>
         <tr>
             <th class="text-center align-middle" scope="col">Объемная плотность, г/см3</th>
             <td class="text-center align-middle" th:text="${result.getGravityMixBulk()}"></td>
             <th class="text-center align-middle" scope="col">Максимальная плотность, г/см3</th>
             <td class="text-center align-middle" th:text="${result.getGravityMixMaximum()}"></td>
+            <th class="text-center align-middle" scope="col">Воздушные пустоты, %</th>
+            <td class="text-center align-middle" th:text="${result.getVoids()}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped table-bordered caption-top">
+        <caption>Содержание битума ПМЗ и ПНВ</caption>
+        <tbody>
+        <tr>
+            <th class="text-center align-middle" scope="col">Способ определения содержания битума в смеси</th>
+            <th class="text-center align-middle" scope="col">Содержание битума, %</th>
+            <th class="text-center align-middle" scope="col">ПМЗ, %</th>
+            <th class="text-center align-middle" scope="col">ПНВ, %</th>
         </tr>
         <tr>
-<!--            <th class="text-center align-middle" scope="col">Содержание воздушных пустот, %</th>-->
-<!--            <td class="text-center align-middle" th:text="${result.getVoids()}"></td>-->
-<!--            <th class="text-center align-middle" scope="col">ПМЗ, %</th>-->
-<!--            <td class="text-center align-middle" th:text="${recipe.getPMZ()}"></td>-->
+            <th class="align-middle" scope="col">Результат испытания на выжигание</th>
+            <td class="text-center align-middle" th:text="${result.getBitumenPercentageIn100Burn()}"></td>
+            <td class="text-center align-middle" th:text="${result.getPMZ_BitumenBurn()}"></td>
+            <td class="text-center align-middle" th:text="${result.getPNB_BitumenBurn()}"></td>
         </tr>
-<!--        <tr>-->
-<!--            <th class="text-center align-middle" scope="col">ПНВ, %</th>-->
-<!--            <td class="text-center align-middle" th:text="${recipe.getPNB()}"></td>-->
-<!--        </tr>-->
+        <tr>
+            <th class="align-middle" scope="col">С учетом корректировки на выгорание материала</th>
+            <td class="text-center align-middle" th:text="${result.getBitumenPercentageIn100BurnCorr()}"></td>
+            <td class="text-center align-middle" th:text="${result.getPMZ_BitumenBurnCorr()}"></td>
+            <td class="text-center align-middle" th:text="${result.getPNB_BitumenBurnCorr()}"></td>
+        </tr>
+        <tr>
+            <th class="align-middle" scope="col">По данным рецепта и максимальной плотности смеси</th>
+            <td class="text-center align-middle" th:text="${result.getBitumenPercentageIn100Gmm()}"></td>
+            <td class="text-center align-middle" th:text="${result.getPMZ_BitumenGmm()}"></td>
+            <td class="text-center align-middle" th:text="${result.getPNB_BitumenGmm()}"></td>
+        </tr>
+        <tr>
+            <th class="align-middle" scope="col">На основе пользовательского значения</th>
+            <td class="text-center align-middle" th:text="${result.getBitumenPercentageIn100User()}"></td>
+            <td class="text-center align-middle" th:text="${result.getPMZ_BitumenUser()}"></td>
+            <td class="text-center align-middle" th:text="${result.getPNB_BitumenUser()}"></td>
+        </tr>
         </tbody>
     </table>
 </div>

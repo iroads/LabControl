@@ -78,6 +78,9 @@ public class HotMixTestResult {
     @Column(name = "bitumen_percentage_in_100_user")
     private double bitumenPercentageIn100User;
 
+    @Column(name = "voids")
+    private double voids;
+
 
     //Партия
     @ManyToOne
@@ -113,6 +116,7 @@ public class HotMixTestResult {
         }
 
         Map<Sito, Double> chopMap = new LinkedHashMap<>();
+
         if (summaCHOG == 0.0) {
             for (Sito sito : Sito.values()) {
                 chopMap.put(sito, 0.0);
@@ -126,6 +130,9 @@ public class HotMixTestResult {
                 chopMap.put(entry.getKey(), chop);
                 summaCHOP = summaCHOP + chop;
             }
+            if (summaCHOP != 100) {
+                chopMap.replace(Sito.DNO, Rounder.roundDouble(2,chopMap.get(Sito.DNO) + 100 - summaCHOP));
+            }
         }
         return chopMap;
     }
@@ -136,9 +143,14 @@ public class HotMixTestResult {
         Map<Sito, Double> chopMap = this.getCHOPS();
         List<Sito> keys = new ArrayList<>(chopMap.keySet());
         Map<Sito, Double> ppMap = new LinkedHashMap<>();
-        for (int i = keys.size() - 1; i >= 0; i--) {
-            ppMap.put(keys.get(i), Rounder.roundDouble(2, summaPP));
+        List<Double> pp = new ArrayList<>();
+        for (int i = keys.size() - 1; i >=0; i--) {
+            pp.add(Rounder.roundDouble(2,summaPP));
             summaPP = summaPP + chopMap.get(keys.get(i));
+        }
+        for (int i = 0; i < keys.size(); i++) {
+
+            ppMap.put(keys.get(i), pp.get(keys.size() - i - 1));
         }
         return ppMap;
     }
@@ -151,7 +163,7 @@ public class HotMixTestResult {
     public double getBitumenPercentageIn100Burn() {
         double weightOfMix = weightOfBasketAndMix - weightOfBasket;
         double weigthOfMixAfterBurn = weightOfBasketAndMixAfterBurn - weightOfBasket;
-        return Rounder.roundDouble(2, (weightOfMix - weigthOfMixAfterBurn) / weightOfMix * 100);
+        return weightOfMix != 0 ? Rounder.roundDouble(2, (weightOfMix - weigthOfMixAfterBurn) / weightOfMix * 100) : 0;
     }
 
     //Расчет содержания вяжущего по данным рецепта и максимальной плотности пробы

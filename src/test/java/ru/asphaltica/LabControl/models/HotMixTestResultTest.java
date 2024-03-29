@@ -21,7 +21,7 @@ class HotMixTestResultTest {
     HotMixTestResult result;
 
     {
-        expectedCHOPS.put(Sito.DNO, 5.5);
+        expectedCHOPS.put(Sito.DNO, 5.51);
         expectedCHOPS.put(Sito.S0063, 7.8);
         expectedCHOPS.put(Sito.S0125, 9.17);
         expectedCHOPS.put(Sito.S025, 6.88);
@@ -37,19 +37,19 @@ class HotMixTestResultTest {
         expectedCHOPS.put(Sito.S315, 5.96);
 
         expectedPP.put(Sito.DNO, 0.0);
-        expectedPP.put(Sito.S0063, 5.5);
-        expectedPP.put(Sito.S0125, 13.30);
-        expectedPP.put(Sito.S025, 22.47);
-        expectedPP.put(Sito.S05, 29.35);
-        expectedPP.put(Sito.S1, 35.31);
-        expectedPP.put(Sito.S2, 41.73);
-        expectedPP.put(Sito.S4, 48.61);
-        expectedPP.put(Sito.S56, 57.78);
-        expectedPP.put(Sito.S8, 66.50);
-        expectedPP.put(Sito.S112, 74.76);
-        expectedPP.put(Sito.S16, 82.56);
-        expectedPP.put(Sito.S224, 89.44);
-        expectedPP.put(Sito.S315, 94.03);
+        expectedPP.put(Sito.S0063, 5.51);
+        expectedPP.put(Sito.S0125, 13.31);
+        expectedPP.put(Sito.S025, 22.48);
+        expectedPP.put(Sito.S05, 29.36);
+        expectedPP.put(Sito.S1, 35.32);
+        expectedPP.put(Sito.S2, 41.74);
+        expectedPP.put(Sito.S4, 48.62);
+        expectedPP.put(Sito.S56, 57.79);
+        expectedPP.put(Sito.S8, 66.51);
+        expectedPP.put(Sito.S112, 74.77);
+        expectedPP.put(Sito.S16, 82.57);
+        expectedPP.put(Sito.S224, 89.45);
+        expectedPP.put(Sito.S315, 94.04);
 
         expectedZero.put(Sito.DNO, 0.0);
         expectedZero.put(Sito.S0063, 0.0);
